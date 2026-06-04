@@ -1,0 +1,279 @@
+$primary-color: #3f51b5;
+$secondary-color: #ff4081;
+$holiday-color: #ffc107;
+$background-color: #f5f5f5;
+$text-primary: #212121;
+$text-secondary: #757575;
+$border-color: #e0e0e0;
+
+.toolbar {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 24px;
+
+  .title {
+    margin: 0;
+    font-size: 28px;
+    font-weight: 300;
+  }
+}
+
+.container {
+  padding: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.settings-card {
+  margin-bottom: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  color: white;
+  .settings-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 24px;
+    align-items: flex-start;
+
+    @media (max-width: 900px) {
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+
+    .input-field {
+      width: 100%;
+    }
+
+    .income-display {
+      grid-column: 1 / -1;
+
+      .income-section {
+        background: linear-gradient(135deg, $primary-color, #35378d);
+        padding: 20px;
+        border-radius: 8px;
+
+        h3 {
+          margin: 0 0 12px 0;
+          font-size: 24px;
+          font-weight: 500;
+        }
+
+        .summary-item {
+          margin: 8px 0;
+          font-size: 18px;
+          display: flex;
+          justify-content: space-between;
+
+          strong {
+            font-weight: 600;
+          }
+        }
+
+        mat-divider {
+          background-color: rgba(255, 255, 255, 0.3) !important;
+          margin: 8px 0;
+        }
+
+        .total-income {
+          margin: 12px 0 0 0;
+          font-size: 24px;
+          font-weight: 500;
+          color: #fff;
+          text-align: center;
+        }
+      }
+    }
+  }
+}
+
+.calendar-card {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+  .month-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 24px;
+    gap: 16px;
+
+    .month-title {
+      margin: 0;
+      font-size: 24px;
+      font-weight: 500;
+      min-width: 200px;
+      text-align: center;
+      color: $text-primary;
+    }
+
+    button {
+      color: $primary-color;
+    }
+  }
+
+  .calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 8px;
+    margin-top: 16px;
+
+    .day-header {
+      font-weight: 600;
+      text-align: center;
+      padding: 12px;
+      color: $primary-color;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .day-cell {
+      aspect-ratio: 1;
+      border: 2px solid $border-color;
+      border-radius: 8px;
+      padding: 8px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background-color: white;
+      position: relative;
+      min-height: 120px;
+      transition: all 0.2s ease;
+      cursor: pointer;
+      &:hover {
+        border-color: $primary-color;
+        box-shadow: 0 2px 8px rgba(63, 81, 181, 0.15);
+      }
+
+      &.weekend {
+        background-color: rgb(134, 134, 255);
+      }
+
+      &.other-month {
+        background-color: #fafafa;
+        opacity: 0.4;
+        cursor: not-allowed;
+
+        &:hover {
+          border-color: $border-color;
+          box-shadow: none;
+        }
+      }
+
+      &.holiday {
+        background: linear-gradient(
+          135deg,
+          rgba(255, 193, 7, 0.1),
+          rgba(255, 152, 0, 0.1)
+        );
+        border-color: $holiday-color;
+
+        &:hover {
+          border-color: $holiday-color;
+          box-shadow: 0 2px 8px rgba(255, 193, 7, 0.2);
+        }
+      }
+
+      .day-number {
+        font-weight: 600;
+        font-size: 14px;
+        color: $text-primary;
+        margin-bottom: 4px;
+      }
+
+      .day-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+        width: 100%;
+        flex: 1;
+        justify-content: center;
+
+        .hours-input {
+          width: 60px;
+          padding: 4px 8px;
+          border: 1px solid $border-color;
+          border-radius: 4px;
+          font-size: 16px;
+          font-weight: 600;
+          text-align: center;
+          color: $text-primary;
+          transition: all 0.2s ease;
+          &:focus {
+            outline: none;
+            border-color: $primary-color;
+            box-shadow: 0 0 4px rgba(63, 81, 181, 0.2);
+          }
+
+          &::placeholder {
+            color: $text-secondary;
+            font-size: 12px;
+          }
+        }
+
+        .base-hours-btn {
+          //   color: $primary-color;
+          background-color: white;
+          border-radius: 4px;
+          width: 100%;
+          padding: 4px;
+          font-size: 14px;
+          font-weight: 600;
+          text-align: center;
+          cursor: pointer;
+          //   border: none;
+          border: 1px solid $primary-color;
+        }
+
+        .holiday-btn {
+          color: $holiday-color;
+          padding: 4px;
+
+          &.active {
+            color: $holiday-color;
+            font-weight: bold;
+          }
+
+          mat-icon {
+            font-size: 18px;
+            width: 18px;
+            height: 18px;
+          }
+        }
+      }
+    }
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+  .container {
+    padding: 12px;
+  }
+
+  .calendar-card {
+    .calendar-grid {
+      gap: 4px;
+
+      .day-cell {
+        min-height: 100px;
+        padding: 4px;
+        font-size: 12px;
+
+        .hours-input {
+          width: 50px;
+          font-size: 14px;
+        }
+
+        .day-number {
+          font-size: 12px;
+        }
+      }
+    }
+  }
+
+  .settings-card {
+    .settings-content {
+      grid-template-columns: 1fr;
+    }
+  }
+}

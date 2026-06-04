@@ -1,0 +1,147 @@
+<mat-toolbar color="primary" class="toolbar">
+  <h1 class="title">Payroll Calculator</h1>
+</mat-toolbar>
+
+<div class="container">
+  <!-- Settings Section -->
+  <mat-card class="settings-card">
+    <mat-card-content class="settings-content">
+      <mat-form-field class="input-field">
+        <mat-label>Base Hourly Rate ($)</mat-label>
+        <input
+          matInput
+          type="number"
+          [(ngModel)]="baseHourlyRate"
+          (change)="onBaseRateChange()"
+          step="0.01"
+        />
+      </mat-form-field>
+
+      <mat-form-field class="input-field">
+        <mat-label>Holiday Multiplier</mat-label>
+        <input
+          matInput
+          type="number"
+          [(ngModel)]="holidayMultiplier"
+          (change)="onMultiplierChange()"
+          step="0.1"
+        />
+      </mat-form-field>
+      <mat-form-field class="input-field">
+        <mat-label>Base Hours Per Day</mat-label>
+        <input
+          matInput
+          type="number"
+          [(ngModel)]="baseHoursPerDay"
+          (change)="onBaseHoursChange()"
+          step="0.1"
+        />
+      </mat-form-field>
+
+      <div class="income-display">
+        <div class="income-section">
+          <h3>Monthly Summary</h3>
+          <p class="summary-item">
+            Regular Hours: <strong>{{ breakdown.regularHours }}</strong>
+          </p>
+          <p class="summary-item">
+            Holiday Hours: <strong>{{ breakdown.holidayHours }}</strong>
+          </p>
+          <mat-divider></mat-divider>
+          <p class="summary-item">
+            Regular Pay:
+            <strong>{{ formatCurrency(breakdown.regularPay) }}</strong>
+          </p>
+          <p class="summary-item">
+            (After Tax) Regular Pay:
+            <strong>{{
+              formatCurrency(breakdown.regularPay * (1 - baseTaxRate))
+            }}</strong>
+          </p>
+          <p class="summary-item">
+            Holiday Pay:
+            <strong>{{ formatCurrency(breakdown.holidayPay) }}</strong>
+          </p>
+          <p class="summary-item">
+            (After Tax) Holiday Pay:
+            <strong>{{
+              formatCurrency(breakdown.holidayPay * (1 - baseTaxRate))
+            }}</strong>
+          </p>
+          <mat-divider></mat-divider>
+          <h2 class="total-income">
+            Gross Total: {{ formatCurrency(monthlyIncome) }}
+          </h2>
+          <h2 class="total-income">
+            Net Total: {{ formatCurrency(monthlyIncome * (1 - baseTaxRate)) }}
+          </h2>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Calendar Section -->
+  <mat-card class="calendar-card">
+    <mat-card-content>
+      <!-- Month Navigation -->
+      <div class="month-header">
+        <button mat-icon-button (click)="previousMonth()">
+          <mat-icon>chevron_left</mat-icon>
+        </button>
+        <h2 class="month-title">{{ getMonthYearDisplay() }}</h2>
+        <button mat-icon-button (click)="nextMonth()">
+          <mat-icon>chevron_right</mat-icon>
+        </button>
+      </div>
+
+      <!-- Day Headers -->
+      <div class="calendar-grid">
+        <div class="day-header" *ngFor="let day of weekDays">
+          {{ day }}
+        </div>
+
+        <!-- Day Cells -->
+        <div
+          class="day-cell"
+          (click)="toggleHoliday(dayData.date)"
+          *ngFor="let dayData of daysArray"
+          [class.other-month]="!isDayInCurrentMonth(dayData.date)"
+          [class.holiday]="
+            dayData.isHoliday && isDayInCurrentMonth(dayData.date)
+          "
+          [class.weekend]="
+            (dayData.date.getDay() === 0 || dayData.date.getDay() === 6) &&
+            isDayInCurrentMonth(dayData.date)
+          "
+        >
+          <div class="day-number" *ngIf="isDayInCurrentMonth(dayData.date)">
+            {{ dayData.date.getDate() }}
+          </div>
+
+          <div class="day-content" *ngIf="isDayInCurrentMonth(dayData.date)">
+            <input
+              type="number"
+              class="hours-input"
+              [(ngModel)]="dayData.hours"
+              (click)="$event.stopPropagation()"
+              (change)="onHoursChange(dayData.date, dayData.hours)"
+              placeholder="hrs"
+              min="0"
+              step="0.5"
+            />
+
+            <button
+              class="base-hours-btn"
+              [class.active]="dayData.isHoliday"
+              (click)="$event.stopPropagation(); applyBaseHours(dayData.date)"
+              mat-icon-button
+              matTooltip="Apply Base Hours"
+            >
+              Apply Base Hours
+            </button>
+          </div>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

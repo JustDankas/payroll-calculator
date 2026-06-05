@@ -39,7 +39,8 @@ export class PayrollCalculatorComponent implements OnInit {
   baseHourlyRate: number = 5.64;
   holidayMultiplier: number = 1.75;
   baseHoursPerDay: number = 8;
-  baseTaxRate: number = 0.1381; // 13.81% tax rate
+  baseTaxRate: number = 13.81; // 13.81% tax rate
+
   currentMonth: Date = new Date();
   monthData: MonthData = {};
   daysArray: DayData[] = [];
@@ -126,6 +127,10 @@ export class PayrollCalculatorComponent implements OnInit {
     this.payrollService.setBaseHoursPerDay(this.baseHoursPerDay);
   }
 
+  onTaxRateChange(): void {
+    this.payrollService.setBaseTaxRate(this.baseTaxRate);
+  }
+
   onMultiplierChange(): void {
     this.payrollService.setHolidayMultiplier(this.holidayMultiplier);
   }
@@ -140,6 +145,10 @@ export class PayrollCalculatorComponent implements OnInit {
 
   applyBaseHours(date: Date): void {
     this.payrollService.setDayHours(date, this.baseHoursPerDay);
+  }
+
+  clearHours(date: Date): void {
+    this.payrollService.setDayHours(date, 0);
   }
 
   previousMonth(): void {
@@ -165,9 +174,18 @@ export class PayrollCalculatorComponent implements OnInit {
   }
 
   formatCurrency(value: number): string {
-    return new Intl.NumberFormat('en-US', {
+    return new Intl.NumberFormat('de-DE', {
       style: 'currency',
-      currency: 'USD',
+      currency: 'EUR',
     }).format(value);
+  }
+
+  sanitizeInput(event: Event): void {
+    const inputElement = event.target as HTMLInputElement;
+    if (inputElement && inputElement.value) {
+      // Converts the string "04" into number 4, removing the leading zero
+      const sanitizedValue = Number(inputElement.value);
+      inputElement.value = sanitizedValue.toString();
+    }
   }
 }

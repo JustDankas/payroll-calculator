@@ -24,6 +24,7 @@ export class PayrollService {
   private baseHourlyRate = new BehaviorSubject<number>(5.64);
   private baseHoursPerDay = new BehaviorSubject<number>(6.5);
   private holidayMultiplier = new BehaviorSubject<number>(1.75);
+  private baseTaxRate = new BehaviorSubject<number>(13.81);
   private currentMonth = new BehaviorSubject<Date>(new Date());
   private monthData = new BehaviorSubject<MonthData>({});
 
@@ -37,6 +38,7 @@ export class PayrollService {
   baseHourlyRate$ = this.baseHourlyRate.asObservable();
   baseHoursPerDay$ = this.baseHoursPerDay.asObservable();
   holidayMultiplier$ = this.holidayMultiplier.asObservable();
+  baseTaxRate$ = this.baseTaxRate.asObservable();
   currentMonth$ = this.currentMonth.asObservable();
   monthData$ = this.monthData.asObservable();
 
@@ -53,6 +55,10 @@ export class PayrollService {
 
   setHolidayMultiplier(multiplier: number): void {
     this.holidayMultiplier.next(multiplier);
+  }
+
+  setBaseTaxRate(taxRate: number): void {
+    this.baseTaxRate.next(taxRate);
   }
 
   setCurrentMonth(date: Date): void {

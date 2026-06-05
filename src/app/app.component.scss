@@ -1,0 +1,29 @@
+html {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  height: 100%;
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.app-outer-container {
+  display: flex;
+  max-width: 100%;
+  justify-content: center;
+  padding: 40px;
+  background: #f8fafc; /* Light slate background for a modern look */
+  min-height: 100vh;
+
+  .app-container {
+    // background: red;
+    max-width: 60%;
+  }
+
+  @media (max-width: 600px) {
+    padding: 20px;
+  }
+}

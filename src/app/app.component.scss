@@ -14,13 +14,14 @@ html {
   display: flex;
   max-width: 100%;
   justify-content: center;
-  padding: 40px;
+  // padding: 40px;
   background: #f8fafc; /* Light slate background for a modern look */
   min-height: 100vh;
+  overflow-x: hidden;
 
   .app-container {
     // background: red;
-    max-width: 60%;
+    // max-width: 60%;
   }
 
   @media (max-width: 600px) {

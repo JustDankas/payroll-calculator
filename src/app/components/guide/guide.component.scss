@@ -1,0 +1,113 @@
+@import "../../../styles/colors";
+
+.guide-card {
+  margin-bottom: 32px;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  border: 1px solid $border-color;
+  padding: 8px;
+
+  .guide-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid $border-color;
+    padding-bottom: 12px;
+
+    .guide-title-icon {
+      color: $primary-color;
+      font-size: 22px;
+      width: 22px;
+      height: 22px;
+    }
+
+    h2 {
+      margin: 0;
+      font-size: 16px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: $text-primary;
+    }
+  }
+
+  .guide-steps {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+
+    @media (max-width: 1350px) {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    @media (max-width: 900px) {
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+
+    @media (max-width: 600px) {
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+  }
+
+  .step-item {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+
+    .step-badge {
+      background-color: #f1f5f9;
+      color: $text-secondary;
+      font-weight: 700;
+      font-size: 13px;
+      min-width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .step-text {
+      strong {
+        display: block;
+        font-size: 18px;
+        font-weight: 600;
+        color: $text-primary;
+        margin-bottom: 4px;
+      }
+
+      p {
+        margin: 0;
+        font-size: 16px;
+        color: $text-secondary;
+        line-height: 1.5;
+      }
+
+      .inline-icon {
+        font-size: 14px;
+        width: 14px;
+        height: 14px;
+        vertical-align: middle;
+        color: $primary-color;
+
+        &::nth-of-type(2) {
+          color: #ef4444;
+        }
+      }
+    }
+  }
+
+  @media (max-width: 900px) {
+    .step-text strong {
+      font-size: 16px;
+    }
+
+    .step-text p {
+      font-size: 14px;
+    }
+  }
+}

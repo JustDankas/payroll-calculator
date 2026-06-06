@@ -1,0 +1,77 @@
+<!-- Calendar Section -->
+<mat-card class="calendar-card">
+  <mat-card-content>
+    <!-- Month Navigation -->
+    <div class="month-header">
+      <button mat-icon-button (click)="previousMonth()">
+        <mat-icon>chevron_left</mat-icon>
+      </button>
+      <h2 class="month-title">{{ getMonthYearDisplay() }}</h2>
+      <button mat-icon-button (click)="nextMonth()">
+        <mat-icon>chevron_right</mat-icon>
+      </button>
+    </div>
+
+    <!-- Day Headers -->
+    <div class="calendar-grid">
+      <div class="day-header" *ngFor="let day of weekDays">
+        <span [class.weekend]="day === 'Sun' || day === 'Sat'">{{ day }}</span>
+      </div>
+
+      <!-- Day Cells -->
+      <div
+        class="day-cell"
+        (click)="onCellClick(dayData, $event)"
+        *ngFor="let dayData of daysArray"
+        [class.other-month]="!isDayInCurrentMonth(dayData.date)"
+        [class.holiday]="dayData.isHoliday && isDayInCurrentMonth(dayData.date)"
+        [class.weekend]="
+          (dayData.date.getDay() === 0 || dayData.date.getDay() === 6) &&
+          isDayInCurrentMonth(dayData.date)
+        "
+      >
+        <div class="day-number" *ngIf="isDayInCurrentMonth(dayData.date)">
+          {{ dayData.date.getDate() }}
+        </div>
+
+        <div class="day-content" *ngIf="isDayInCurrentMonth(dayData.date)">
+          <label class="hours-label">Hours Worked:</label>
+          <input
+            type="number"
+            class="hours-input"
+            [(ngModel)]="dayData.hours"
+            (click)="$event.stopPropagation()"
+            (change)="
+              onHoursChange(dayData.date, dayData.hours); sanitizeInput($event)
+            "
+            placeholder="hrs"
+            min="0"
+            step="0.5"
+          />
+
+          <span class="hours-display">{{ dayData.hours }}h</span>
+          <!-- <div class="actions-container">
+              <button
+                class="base-hours-btn"
+                [class.active]="dayData.isHoliday"
+                (click)="$event.stopPropagation(); applyBaseHours(dayData.date)"
+                mat-icon-button
+                matTooltip="Apply Base Hours"
+              >
+                <mat-icon>add</mat-icon>
+              </button>
+              <button
+                class="base-hours-btn"
+                [class.active]="dayData.isHoliday"
+                (click)="$event.stopPropagation(); clearHours(dayData.date)"
+                mat-icon-button
+                matTooltip="Clear Hours"
+              >
+                <mat-icon>close</mat-icon>
+              </button>
+            </div> -->
+        </div>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>

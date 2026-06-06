@@ -4,18 +4,19 @@
 
 <div class="container">
   <!-- Settings Section -->
-  <mat-card class="settings-card">
-    <mat-card-content class="settings-content">
-      <mat-form-field class="input-field">
-        <mat-label>Base Hourly Rate (€)</mat-label>
-        <input
-          matInput
-          type="number"
-          [(ngModel)]="baseHourlyRate"
-          (change)="onBaseRateChange()"
-          step="0.01"
-        />
-        <!-- <mat-icon
+  <div class="constrained-width">
+    <mat-card class="settings-card">
+      <mat-card-content class="settings-content">
+        <mat-form-field class="input-field">
+          <mat-label>Base Hourly Rate (€)</mat-label>
+          <input
+            matInput
+            type="number"
+            [(ngModel)]="baseHourlyRate"
+            (change)="onBaseRateChange()"
+            step="0.01"
+          />
+          <!-- <mat-icon
           matSuffix
           matTooltip="Your standard hourly wage before taxes, bonuses, or overtime are applied."
           matTooltipPosition="above"
@@ -23,232 +24,99 @@
         >
           info
         </mat-icon> -->
-        <mat-hint class="info-hint"
-          >Your standard hourly wage before taxes, bonuses, or
-          overtime.</mat-hint
-        >
-      </mat-form-field>
+          <mat-hint class="info-hint"
+            >Your standard hourly wage before taxes, bonuses, or
+            overtime.</mat-hint
+          >
+        </mat-form-field>
 
-      <mat-form-field class="input-field">
-        <mat-label>Holiday Multiplier</mat-label>
-        <input
-          matInput
-          type="number"
-          [(ngModel)]="holidayMultiplier"
-          (change)="onMultiplierChange()"
-          step="0.1"
-        />
-        <mat-hint class="info-hint"
-          >Your country's standard holiday multiplier. In Greece, Sundays and
-          holidays are paid at 1.75x rate.</mat-hint
-        >
-      </mat-form-field>
-      <mat-form-field class="input-field">
-        <mat-label>Base Hours Per Day</mat-label>
-        <input
-          matInput
-          type="number"
-          [(ngModel)]="baseHoursPerDay"
-          (change)="onBaseHoursChange()"
-          step="0.1"
-        />
-        <mat-hint class="info-hint"
-          >This is a helper field to add working hours per day faster by
-          clicking the 'add' button below.</mat-hint
-        >
-      </mat-form-field>
-      <mat-form-field class="input-field">
-        <mat-label>Base Tax Rate (%)</mat-label>
-        <input
-          matInput
-          type="number"
-          [(ngModel)]="baseTaxRate"
-          (change)="onTaxRateChange()"
-          step="0.01"
-        />
-        <mat-hint class="info-hint"
-          >The percentage of your income that goes to taxes for public
-          insurance.</mat-hint
-        >
-      </mat-form-field>
+        <mat-form-field class="input-field">
+          <mat-label>Holiday Multiplier</mat-label>
+          <input
+            matInput
+            type="number"
+            [(ngModel)]="holidayMultiplier"
+            (change)="onMultiplierChange()"
+            step="0.1"
+          />
+          <mat-hint class="info-hint"
+            >Your country's standard holiday multiplier. In Greece, Sundays and
+            holidays are paid at 1.75x rate.</mat-hint
+          >
+        </mat-form-field>
+        <mat-form-field class="input-field">
+          <mat-label>Base Hours Per Day</mat-label>
+          <input
+            matInput
+            type="number"
+            [(ngModel)]="baseHoursPerDay"
+            (change)="onBaseHoursChange()"
+            step="0.1"
+          />
+          <mat-hint class="info-hint"
+            >This is a helper field to add working hours per day faster by
+            clicking the 'add' button below.</mat-hint
+          >
+        </mat-form-field>
+        <mat-form-field class="input-field">
+          <mat-label>Base Tax Rate (%)</mat-label>
+          <input
+            matInput
+            type="number"
+            [(ngModel)]="baseTaxRate"
+            (change)="onTaxRateChange()"
+            step="0.01"
+          />
+          <mat-hint class="info-hint"
+            >The percentage of your income that goes to taxes for public
+            insurance.</mat-hint
+          >
+        </mat-form-field>
 
-      <div class="income-display">
-        <div class="income-section">
-          <h3>Monthly Summary</h3>
-          <p class="summary-item">
-            Regular Hours: <strong>{{ breakdown.regularHours }}</strong>
-          </p>
-          <p class="summary-item">
-            Holiday Hours: <strong>{{ breakdown.holidayHours }}</strong>
-          </p>
-          <mat-divider></mat-divider>
-          <p class="summary-item">
-            Regular Pay:
-            <strong>{{ formatCurrency(breakdown.regularPay) }}</strong>
-          </p>
-          <p class="summary-item after-tax">
-            (After Tax) Regular Pay:
-            <strong>{{
-              formatCurrency(breakdown.regularPay * (1 - baseTaxRate / 100))
-            }}</strong>
-          </p>
-          <p class="summary-item">
-            Holiday Pay:
-            <strong>{{ formatCurrency(breakdown.holidayPay) }}</strong>
-          </p>
-          <p class="summary-item after-tax">
-            (After Tax) Holiday Pay:
-            <strong>{{
-              formatCurrency(breakdown.holidayPay * (1 - baseTaxRate / 100))
-            }}</strong>
-          </p>
-          <mat-divider></mat-divider>
-          <h2 class="total-income">
-            Gross Total: {{ formatCurrency(monthlyIncome) }}
-          </h2>
-          <h2 class="total-income">
-            Net Total:
-            {{ formatCurrency(monthlyIncome * (1 - baseTaxRate / 100)) }}
-          </h2>
-        </div>
-      </div>
-    </mat-card-content>
-  </mat-card>
-
-  <mat-card class="guide-card">
-    <mat-card-content>
-      <div class="guide-header">
-        <mat-icon class="guide-title-icon">explore</mat-icon>
-        <h2>How to Calculate Your Payroll</h2>
-      </div>
-
-      <div class="guide-steps">
-        <div class="step-item">
-          <div class="step-badge">1</div>
-          <div class="step-text">
-            <strong>Configure Rates</strong>
-            <p>
-              Set your hourly wage, standard tax percentage, and your regional
-              holiday multiplier.
+        <div class="income-display">
+          <div class="income-section">
+            <h3>Monthly Summary</h3>
+            <p class="summary-item">
+              Regular Hours: <strong>{{ breakdown.regularHours }}</strong>
             </p>
-          </div>
-        </div>
-
-        <div class="step-item">
-          <div class="step-badge">2</div>
-          <div class="step-text">
-            <strong>Log Shift Hours</strong>
-            <p>
-              Hover over any day on the calendar and type your hours directly
-              into the box.
+            <p class="summary-item">
+              Holiday Hours: <strong>{{ breakdown.holidayHours }}</strong>
             </p>
-          </div>
-        </div>
-
-        <div class="step-item">
-          <div class="step-badge">3</div>
-          <div class="step-text">
-            <strong>Quick Actions</strong>
-            <p>
-              Click <mat-icon class="inline-icon">add</mat-icon> to instantly
-              apply your base hours, or click
-              <mat-icon class="inline-icon">close</mat-icon> to reset a day.
+            <mat-divider></mat-divider>
+            <p class="summary-item">
+              Regular Pay:
+              <strong>{{ formatCurrency(breakdown.regularPay) }}</strong>
             </p>
-          </div>
-        </div>
-
-        <div class="step-item">
-          <div class="step-badge">4</div>
-          <div class="step-text">
-            <strong>Toggle Holidays</strong>
-            <p>
-              Click the blank background space of a day cell to mark it as a
-              premium holiday/Sunday.
+            <p class="summary-item after-tax">
+              (After Tax) Regular Pay:
+              <strong>{{
+                formatCurrency(breakdown.regularPay * (1 - baseTaxRate / 100))
+              }}</strong>
             </p>
+            <p class="summary-item">
+              Holiday Pay:
+              <strong>{{ formatCurrency(breakdown.holidayPay) }}</strong>
+            </p>
+            <p class="summary-item after-tax">
+              (After Tax) Holiday Pay:
+              <strong>{{
+                formatCurrency(breakdown.holidayPay * (1 - baseTaxRate / 100))
+              }}</strong>
+            </p>
+            <mat-divider></mat-divider>
+            <h2 class="total-income">
+              Gross Total: {{ formatCurrency(monthlyIncome) }}
+            </h2>
+            <h2 class="total-income">
+              Net Total:
+              {{ formatCurrency(monthlyIncome * (1 - baseTaxRate / 100)) }}
+            </h2>
           </div>
         </div>
-      </div>
-    </mat-card-content>
-  </mat-card>
+      </mat-card-content>
+    </mat-card>
 
-  <!-- Calendar Section -->
-  <mat-card class="calendar-card">
-    <mat-card-content>
-      <!-- Month Navigation -->
-      <div class="month-header">
-        <button mat-icon-button (click)="previousMonth()">
-          <mat-icon>chevron_left</mat-icon>
-        </button>
-        <h2 class="month-title">{{ getMonthYearDisplay() }}</h2>
-        <button mat-icon-button (click)="nextMonth()">
-          <mat-icon>chevron_right</mat-icon>
-        </button>
-      </div>
-
-      <!-- Day Headers -->
-      <div class="calendar-grid">
-        <div class="day-header" *ngFor="let day of weekDays">
-          <span [class.weekend]="day === 'Sun' || day === 'Sat'" ]>{{
-            day
-          }}</span>
-        </div>
-
-        <!-- Day Cells -->
-        <div
-          class="day-cell"
-          (click)="toggleHoliday(dayData.date)"
-          *ngFor="let dayData of daysArray"
-          [class.other-month]="!isDayInCurrentMonth(dayData.date)"
-          [class.holiday]="
-            dayData.isHoliday && isDayInCurrentMonth(dayData.date)
-          "
-          [class.weekend]="
-            (dayData.date.getDay() === 0 || dayData.date.getDay() === 6) &&
-            isDayInCurrentMonth(dayData.date)
-          "
-        >
-          <div class="day-number" *ngIf="isDayInCurrentMonth(dayData.date)">
-            {{ dayData.date.getDate() }}
-          </div>
-
-          <div class="day-content" *ngIf="isDayInCurrentMonth(dayData.date)">
-            <label class="hours-label">Hours Worked:</label>
-            <input
-              type="number"
-              class="hours-input"
-              [(ngModel)]="dayData.hours"
-              (click)="$event.stopPropagation()"
-              (change)="
-                onHoursChange(dayData.date, dayData.hours);
-                sanitizeInput($event)
-              "
-              placeholder="hrs"
-              min="0"
-              step="0.5"
-            />
-            <!-- <div class="actions-container">
-              <button
-                class="base-hours-btn"
-                [class.active]="dayData.isHoliday"
-                (click)="$event.stopPropagation(); applyBaseHours(dayData.date)"
-                mat-icon-button
-                matTooltip="Apply Base Hours"
-              >
-                <mat-icon>add</mat-icon>
-              </button>
-              <button
-                class="base-hours-btn"
-                [class.active]="dayData.isHoliday"
-                (click)="$event.stopPropagation(); clearHours(dayData.date)"
-                mat-icon-button
-                matTooltip="Clear Hours"
-              >
-                <mat-icon>close</mat-icon>
-              </button>
-            </div> -->
-          </div>
-        </div>
-      </div>
-    </mat-card-content>
-  </mat-card>
+    <app-guide></app-guide>
+  </div>
+  <app-calendar></app-calendar>
 </div>

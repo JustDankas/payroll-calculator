@@ -99,6 +99,17 @@ export class PayrollService {
     this.monthData.next(data);
   }
 
+  setDayHoliday(date: Date, isHoliday: boolean): void {
+    const key = this.getDateKey(date);
+    const data = { ...this.monthData.value };
+    if (!data[key]) {
+      data[key] = { date, hours: 0, isHoliday };
+    } else {
+      data[key].isHoliday = isHoliday;
+    }
+    this.monthData.next(data);
+  }
+
   getDayData(date: Date): DayData | null {
     const key = this.getDateKey(date);
     return this.monthData.value[key] || null;

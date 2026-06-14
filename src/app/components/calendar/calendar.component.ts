@@ -64,6 +64,8 @@ export class CalendarComponent implements OnInit {
         date: new Date(year, month, -i),
         hours: 0,
         isHoliday: false,
+        startTimeHours: 0,
+        endTimeHours: 0,
       });
     }
 
@@ -75,6 +77,8 @@ export class CalendarComponent implements OnInit {
         date,
         hours: 0,
         isHoliday: this.isHolidayDate(date),
+        startTimeHours: 0,
+        endTimeHours: 0,
       };
       this.daysArray.push(dayData);
     }
@@ -95,10 +99,6 @@ export class CalendarComponent implements OnInit {
     });
   }
 
-  onHoursChange(date: Date, hours: number): void {
-    this.payrollService.setDayHours(date, hours);
-  }
-
   private isHolidayDate(date: Date): boolean {
     const dayOfWeek = date.getDay();
     return dayOfWeek === 0; // Sunday
@@ -109,29 +109,29 @@ export class CalendarComponent implements OnInit {
   }
 
   onCellClick(dayData: DayData, event: Event): void {
-    // On small screens open edit dialog, on larger screens toggle holiday
-    const isMobile = window.innerWidth <= 600;
-    if (isMobile) {
-      event.stopPropagation();
-      this.openEditDialog(dayData);
-    } else {
-      this.toggleHoliday(dayData.date);
-    }
+    event.stopPropagation();
+    this.openEditDialog(dayData);
   }
 
   openEditDialog(dayData: DayData): void {
     const dialogRef = this.dialog.open(CalendarDayModalComponent, {
-      width: '320px',
+      // width: '360px',
       data: {
         date: dayData.date,
         hours: dayData.hours,
+        startTimeHours: dayData.startTimeHours ?? 0,
+        endTimeHours: dayData.endTimeHours ?? dayData.hours ?? 0,
         isHoliday: dayData.isHoliday,
       },
     });
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.payrollService.setDayHours(dayData.date, result.hours);
+        this.payrollService.setDayRange(
+          dayData.date,
+          result.startTimeHours,
+          result.endTimeHours,
+        );
         this.payrollService.setDayHoliday(dayData.date, result.isHoliday);
       }
     });
@@ -144,12 +144,9 @@ export class CalendarComponent implements OnInit {
     );
   }
 
-  sanitizeInput(event: Event): void {
-    const inputElement = event.target as HTMLInputElement;
-    if (inputElement && inputElement.value) {
-      // Converts the string "04" into number 4, removing the leading zero
-      const sanitizedValue = Number(inputElement.value);
-      inputElement.value = sanitizedValue.toString();
+  clearAllValues(): void {
+    if (confirm('Are you sure you want to clear all calendar values?')) {
+      this.payrollService.clearAllData();
     }
   }
 }

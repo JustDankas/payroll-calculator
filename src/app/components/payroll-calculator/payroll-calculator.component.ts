@@ -38,7 +38,6 @@ import { GuideComponent } from '../guide/guide.component';
 export class PayrollCalculatorComponent implements OnInit {
   baseHourlyRate: number = 5.64;
   holidayMultiplier: number = 1.75;
-  baseHoursPerDay: number = 8;
   baseTaxRate: number = 13.81; // 13.81% tax rate
 
   monthlyIncome: number = 0;
@@ -76,20 +75,12 @@ export class PayrollCalculatorComponent implements OnInit {
     this.payrollService.setBaseHourlyRate(this.baseHourlyRate);
   }
 
-  onBaseHoursChange(): void {
-    this.payrollService.setBaseHoursPerDay(this.baseHoursPerDay);
-  }
-
   onTaxRateChange(): void {
     this.payrollService.setBaseTaxRate(this.baseTaxRate);
   }
 
   onMultiplierChange(): void {
     this.payrollService.setHolidayMultiplier(this.holidayMultiplier);
-  }
-
-  applyBaseHours(date: Date): void {
-    this.payrollService.setDayHours(date, this.baseHoursPerDay);
   }
 
   clearHours(date: Date): void {

@@ -45,20 +45,6 @@
           >
         </mat-form-field>
         <mat-form-field class="input-field">
-          <mat-label>Base Hours Per Day</mat-label>
-          <input
-            matInput
-            type="number"
-            [(ngModel)]="baseHoursPerDay"
-            (change)="onBaseHoursChange()"
-            step="0.1"
-          />
-          <mat-hint class="info-hint"
-            >This is a helper field to add working hours per day faster by
-            clicking the 'add' button below.</mat-hint
-          >
-        </mat-form-field>
-        <mat-form-field class="input-field">
           <mat-label>Base Tax Rate (%)</mat-label>
           <input
             matInput
@@ -82,6 +68,9 @@
             <p class="summary-item">
               Holiday Hours: <strong>{{ breakdown.holidayHours }}</strong>
             </p>
+            <p class="summary-item">
+              Night Hours: <strong>{{ breakdown.nightHours }}</strong>
+            </p>
             <mat-divider></mat-divider>
             <p class="summary-item">
               Regular Pay:
@@ -101,6 +90,16 @@
               (After Tax) Holiday Pay:
               <strong>{{
                 formatCurrency(breakdown.holidayPay * (1 - baseTaxRate / 100))
+              }}</strong>
+            </p>
+            <p class="summary-item">
+              Night Premium Pay:
+              <strong>{{ formatCurrency(breakdown.nightPay) }}</strong>
+            </p>
+            <p class="summary-item after-tax">
+              (After Tax) Night Premium Pay:
+              <strong>{{
+                formatCurrency(breakdown.nightPay * (1 - baseTaxRate / 100))
               }}</strong>
             </p>
             <mat-divider></mat-divider>

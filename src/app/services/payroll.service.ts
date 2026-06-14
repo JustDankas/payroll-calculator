@@ -5,6 +5,8 @@ export interface DayData {
   date: Date;
   hours: number;
   isHoliday: boolean;
+  startTimeHours: number;
+  endTimeHours: number;
 }
 
 export interface MonthData {
@@ -22,7 +24,6 @@ export interface HolidayDate {
 })
 export class PayrollService {
   private baseHourlyRate = new BehaviorSubject<number>(5.64);
-  private baseHoursPerDay = new BehaviorSubject<number>(6.5);
   private holidayMultiplier = new BehaviorSubject<number>(1.75);
   private baseTaxRate = new BehaviorSubject<number>(13.81);
   private currentMonth = new BehaviorSubject<Date>(new Date());
@@ -36,7 +37,6 @@ export class PayrollService {
   ];
 
   baseHourlyRate$ = this.baseHourlyRate.asObservable();
-  baseHoursPerDay$ = this.baseHoursPerDay.asObservable();
   holidayMultiplier$ = this.holidayMultiplier.asObservable();
   baseTaxRate$ = this.baseTaxRate.asObservable();
   currentMonth$ = this.currentMonth.asObservable();
@@ -48,9 +48,6 @@ export class PayrollService {
 
   setBaseHourlyRate(rate: number): void {
     this.baseHourlyRate.next(rate);
-  }
-  setBaseHoursPerDay(hours: number): void {
-    this.baseHoursPerDay.next(hours);
   }
 
   setHolidayMultiplier(multiplier: number): void {
@@ -81,10 +78,53 @@ export class PayrollService {
   setDayHours(date: Date, hours: number): void {
     const key = this.getDateKey(date);
     const data = { ...this.monthData.value };
+    const startTimeHours = data[key]?.startTimeHours ?? 0;
+    const endTimeHours = startTimeHours + Math.max(0, hours);
     if (!data[key]) {
-      data[key] = { date, hours: 0, isHoliday: this.isHolidayDate(date) };
+      data[key] = {
+        date,
+        hours,
+        isHoliday: this.isHolidayDate(date),
+        startTimeHours,
+        endTimeHours,
+      };
+    } else {
+      data[key] = {
+        ...data[key],
+        hours,
+        startTimeHours,
+        endTimeHours,
+      };
     }
-    data[key].hours = hours;
+    this.monthData.next(data);
+  }
+
+  setDayRange(date: Date, startTimeHours: number, endTimeHours: number): void {
+    const key = this.getDateKey(date);
+    const data = { ...this.monthData.value };
+    const validatedStart = Math.max(0, Math.min(36, Number(startTimeHours)));
+    const validatedEnd = Math.max(
+      validatedStart,
+      Math.min(36, Number(endTimeHours)),
+    );
+    const hours = Number((validatedEnd - validatedStart).toFixed(2));
+
+    if (!data[key]) {
+      data[key] = {
+        date,
+        hours,
+        isHoliday: this.isHolidayDate(date),
+        startTimeHours: validatedStart,
+        endTimeHours: validatedEnd,
+      };
+    } else {
+      data[key] = {
+        ...data[key],
+        hours,
+        startTimeHours: validatedStart,
+        endTimeHours: validatedEnd,
+      };
+    }
     this.monthData.next(data);
   }
 
@@ -92,9 +132,18 @@ export class PayrollService {
     const key = this.getDateKey(date);
     const data = { ...this.monthData.value };
     if (!data[key]) {
-      data[key] = { date, hours: 0, isHoliday: true };
+      data[key] = {
+        date,
+        hours: 0,
+        isHoliday: true,
+        startTimeHours: 0,
+        endTimeHours: 0,
+      };
     } else {
-      data[key].isHoliday = !data[key].isHoliday;
+      data[key] = {
+        ...data[key],
+        isHoliday: !data[key].isHoliday,
+      };
     }
     this.monthData.next(data);
   }
@@ -103,9 +152,18 @@ export class PayrollService {
     const key = this.getDateKey(date);
     const data = { ...this.monthData.value };
     if (!data[key]) {
-      data[key] = { date, hours: 0, isHoliday };
+      data[key] = {
+        date,
+        hours: 0,
+        isHoliday,
+        startTimeHours: 0,
+        endTimeHours: 0,
+      };
     } else {
-      data[key].isHoliday = isHoliday;
+      data[key] = {
+        ...data[key],
+        isHoliday,
+      };
     }
     this.monthData.next(data);
   }
@@ -128,6 +186,8 @@ export class PayrollService {
         date,
         hours: 0,
         isHoliday: this.isHolidayDate(date),
+        startTimeHours: 0,
+        endTimeHours: 0,
       };
     }
 
@@ -148,14 +208,40 @@ export class PayrollService {
     return `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
   }
 
+  private getNightHours(startTimeHours: number, endTimeHours: number): number {
+    const start = Math.max(0, Math.min(36, startTimeHours));
+    const end = Math.max(0, Math.min(36, endTimeHours));
+    if (end <= start) {
+      return 0;
+    }
+
+    const nightWindows: Array<[number, number]> = [
+      [0, 6],
+      [22, 30],
+    ];
+
+    return nightWindows.reduce((total, [windowStart, windowEnd]) => {
+      const overlapStart = Math.max(start, windowStart);
+      const overlapEnd = Math.min(end, windowEnd);
+      return total + Math.max(0, overlapEnd - overlapStart);
+    }, 0);
+  }
+
   calculateMonthlyIncome(): number {
     const baseRate = this.baseHourlyRate.value;
     const multiplier = this.holidayMultiplier.value;
+    const nightBonus = 0.25;
 
     let total = 0;
     Object.values(this.monthData.value).forEach((dayData) => {
-      const rate = dayData.isHoliday ? baseRate * multiplier : baseRate;
-      total += dayData.hours * rate;
+      const basePay = dayData.hours * baseRate;
+      const holidayPay = dayData.isHoliday ? basePay * (multiplier - 1) : 0;
+      const nightHours = this.getNightHours(
+        dayData.startTimeHours,
+        dayData.endTimeHours,
+      );
+      const nightPay = nightHours * baseRate * nightBonus;
+      total += basePay + holidayPay + nightPay;
     });
 
     return total;
@@ -164,14 +250,18 @@ export class PayrollService {
   getMonthlyBreakdown(): {
     regularHours: number;
     holidayHours: number;
+    nightHours: number;
     regularPay: number;
     holidayPay: number;
+    nightPay: number;
   } {
     const baseRate = this.baseHourlyRate.value;
     const multiplier = this.holidayMultiplier.value;
+    const nightBonus = 0.25;
 
     let regularHours = 0;
     let holidayHours = 0;
+    let nightHours = 0;
 
     Object.values(this.monthData.value).forEach((dayData) => {
       if (dayData.isHoliday) {
@@ -179,13 +269,23 @@ export class PayrollService {
       } else {
         regularHours += dayData.hours;
       }
+      nightHours += this.getNightHours(
+        dayData.startTimeHours,
+        dayData.endTimeHours,
+      );
     });
 
     return {
       regularHours,
       holidayHours,
+      nightHours,
       regularPay: regularHours * baseRate,
       holidayPay: holidayHours * baseRate * multiplier,
+      nightPay: nightHours * baseRate * nightBonus,
     };
+  }
+
+  clearAllData(): void {
+    this.initializeMonth();
   }
 }

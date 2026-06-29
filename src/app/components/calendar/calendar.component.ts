@@ -64,8 +64,7 @@ export class CalendarComponent implements OnInit {
         date: new Date(year, month, -i),
         hours: 0,
         isHoliday: false,
-        startTimeHours: 0,
-        endTimeHours: 0,
+        intervals: [],
       });
     }
 
@@ -77,8 +76,7 @@ export class CalendarComponent implements OnInit {
         date,
         hours: 0,
         isHoliday: this.isHolidayDate(date),
-        startTimeHours: 0,
-        endTimeHours: 0,
+        intervals: [],
       };
       this.daysArray.push(dayData);
     }
@@ -118,20 +116,14 @@ export class CalendarComponent implements OnInit {
       // width: '360px',
       data: {
         date: dayData.date,
-        hours: dayData.hours,
-        startTimeHours: dayData.startTimeHours ?? 0,
-        endTimeHours: dayData.endTimeHours ?? dayData.hours ?? 0,
+        intervals: dayData.intervals ?? [],
         isHoliday: dayData.isHoliday,
       },
     });
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.payrollService.setDayRange(
-          dayData.date,
-          result.startTimeHours,
-          result.endTimeHours,
-        );
+        this.payrollService.setDayIntervals(dayData.date, result.intervals);
         this.payrollService.setDayHoliday(dayData.date, result.isHoliday);
       }
     });

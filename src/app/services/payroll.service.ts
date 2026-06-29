@@ -1,12 +1,16 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
+export interface DayInterval {
+  start: number;
+  end: number;
+}
+
 export interface DayData {
   date: Date;
   hours: number;
   isHoliday: boolean;
-  startTimeHours: number;
-  endTimeHours: number;
+  intervals: DayInterval[];
 }
 
 export interface MonthData {
@@ -78,54 +82,69 @@ export class PayrollService {
   setDayHours(date: Date, hours: number): void {
     const key = this.getDateKey(date);
     const data = { ...this.monthData.value };
-    const startTimeHours = data[key]?.startTimeHours ?? 0;
-    const endTimeHours = startTimeHours + Math.max(0, hours);
+    const validatedHours = Math.max(0, hours);
+
+    if (!data[key]) {
+      data[key] = {
+        date,
+        hours: validatedHours,
+        isHoliday: this.isHolidayDate(date),
+        intervals: [],
+      };
+    } else {
+      data[key] = {
+        ...data[key],
+        hours: validatedHours,
+        intervals: [],
+      };
+    }
+
+    this.monthData.next(data);
+  }
+
+  setDayIntervals(date: Date, intervals: DayInterval[]): void {
+    const key = this.getDateKey(date);
+    const data = { ...this.monthData.value };
+
+    const validatedIntervals = intervals
+      .map((interval) => ({
+        start: this.clampHour(interval.start),
+        end: this.clampHour(interval.end),
+      }))
+      .filter((interval) => interval.end > interval.start)
+      .sort((a, b) => a.start - b.start);
+
+    const hours = Number(
+      validatedIntervals
+        .reduce((sum, interval) => sum + interval.end - interval.start, 0)
+        .toFixed(2),
+    );
+
     if (!data[key]) {
       data[key] = {
         date,
         hours,
         isHoliday: this.isHolidayDate(date),
-        startTimeHours,
-        endTimeHours,
+        intervals: validatedIntervals,
       };
     } else {
       data[key] = {
         ...data[key],
         hours,
-        startTimeHours,
-        endTimeHours,
+        intervals: validatedIntervals,
       };
     }
+
     this.monthData.next(data);
   }
 
   setDayRange(date: Date, startTimeHours: number, endTimeHours: number): void {
-    const key = this.getDateKey(date);
-    const data = { ...this.monthData.value };
-    const validatedStart = Math.max(0, Math.min(36, Number(startTimeHours)));
-    const validatedEnd = Math.max(
-      validatedStart,
-      Math.min(36, Number(endTimeHours)),
-    );
-    const hours = Number((validatedEnd - validatedStart).toFixed(2));
-
-    if (!data[key]) {
-      data[key] = {
-        date,
-        hours,
-        isHoliday: this.isHolidayDate(date),
-        startTimeHours: validatedStart,
-        endTimeHours: validatedEnd,
-      };
-    } else {
-      data[key] = {
-        ...data[key],
-        hours,
-        startTimeHours: validatedStart,
-        endTimeHours: validatedEnd,
-      };
-    }
-    this.monthData.next(data);
+    this.setDayIntervals(date, [
+      {
+        start: this.clampHour(Number(startTimeHours)),
+        end: this.clampHour(Number(endTimeHours)),
+      },
+    ]);
   }
 
   toggleHoliday(date: Date): void {
@@ -136,8 +155,7 @@ export class PayrollService {
         date,
         hours: 0,
         isHoliday: true,
-        startTimeHours: 0,
-        endTimeHours: 0,
+        intervals: [],
       };
     } else {
       data[key] = {
@@ -156,8 +174,7 @@ export class PayrollService {
         date,
         hours: 0,
         isHoliday,
-        startTimeHours: 0,
-        endTimeHours: 0,
+        intervals: [],
       };
     } else {
       data[key] = {
@@ -186,8 +203,7 @@ export class PayrollService {
         date,
         hours: 0,
         isHoliday: this.isHolidayDate(date),
-        startTimeHours: 0,
-        endTimeHours: 0,
+        intervals: [],
       };
     }
 
@@ -208,16 +224,10 @@ export class PayrollService {
     return `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
   }
 
-  private getNightHours(startTimeHours: number, endTimeHours: number): number {
-    const start = Math.max(0, Math.min(36, startTimeHours));
-    const end = Math.max(0, Math.min(36, endTimeHours));
-    if (end <= start) {
-      return 0;
-    }
-
+  private getNightOverlap(start: number, end: number): number {
     const nightWindows: Array<[number, number]> = [
       [0, 6],
-      [22, 30],
+      [22, 24],
     ];
 
     return nightWindows.reduce((total, [windowStart, windowEnd]) => {
@@ -225,6 +235,14 @@ export class PayrollService {
       const overlapEnd = Math.min(end, windowEnd);
       return total + Math.max(0, overlapEnd - overlapStart);
     }, 0);
+  }
+
+  private getNightHours(intervals: DayInterval[]): number {
+    return intervals.reduce(
+      (total, interval) =>
+        total + this.getNightOverlap(interval.start, interval.end),
+      0,
+    );
   }
 
   calculateMonthlyIncome(): number {
@@ -236,10 +254,7 @@ export class PayrollService {
     Object.values(this.monthData.value).forEach((dayData) => {
       const basePay = dayData.hours * baseRate;
       const holidayPay = dayData.isHoliday ? basePay * (multiplier - 1) : 0;
-      const nightHours = this.getNightHours(
-        dayData.startTimeHours,
-        dayData.endTimeHours,
-      );
+      const nightHours = this.getNightHours(dayData.intervals);
       const nightPay = nightHours * baseRate * nightBonus;
       total += basePay + holidayPay + nightPay;
     });
@@ -269,10 +284,7 @@ export class PayrollService {
       } else {
         regularHours += dayData.hours;
       }
-      nightHours += this.getNightHours(
-        dayData.startTimeHours,
-        dayData.endTimeHours,
-      );
+      nightHours += this.getNightHours(dayData.intervals);
     });
 
     return {
@@ -287,5 +299,9 @@ export class PayrollService {
 
   clearAllData(): void {
     this.initializeMonth();
+  }
+
+  private clampHour(value: number): number {
+    return Math.min(Math.max(isNaN(Number(value)) ? 0 : Number(value), 0), 24);
   }
 }

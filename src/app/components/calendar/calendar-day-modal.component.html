@@ -2,76 +2,76 @@
   <!-- <h3>Edit Day</h3> -->
   <h3>{{ date | date: "fullDate" }}</h3>
   <div class="range-slider">
-    <!-- <div class="slider-label-row">
-      <div>
-        Start: <strong>{{ formatShiftTime(startTimeHours) }}</strong>
-      </div>
-      <div>
-        End: <strong>{{ formatShiftTime(endTimeHours) }}</strong>
-      </div>
-    </div> -->
+    <div class="interval-list">
+      @for (interval of intervals; let i = $index; track i) {
+        <div class="interval-row">
+          <mat-form-field>
+            <mat-label>Start</mat-label>
 
-    <!-- <div class="slider-track" [style.background]="getRangeBackground()">
-      <input
-        type="range"
-        min="0"
-        [max]="MAX_SHIFT_HOURS"
-        step="0.5"
-        [(ngModel)]="startTimeHours"
-        (input)="onStartChange()"
-      />
+            <mat-select
+              [value]="interval.start"
+              (valueChange)="updateInterval(i, 'start', $event)"
+            >
+              @for (hour of hourOptions; track hour) {
+                <mat-option [value]="hour">{{
+                  formatTimeLabel(hour)
+                }}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>End</mat-label>
 
-      <input
-        type="range"
-        min="0"
-        [max]="MAX_SHIFT_HOURS"
-        step="0.5"
-        [(ngModel)]="endTimeHours"
-        (input)="onEndChange()"
-      />
-    </div> -->
+            <mat-select
+              [value]="interval.end"
+              (valueChange)="updateInterval(i, 'end', $event)"
+            >
+              @for (hour of hourOptions; track hour) {
+                <mat-option [value]="hour">{{
+                  formatTimeLabel(hour)
+                }}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+          <span class="interval-duration"
+            >{{ interval.end - interval.start | number: "1.1-1" }}h</span
+          >
 
-    <div class="wrapper">
-      <div class="container">
-        <div #sliderStart class="slider-start">
-          Start: <strong>{{ formatShiftTime(startTimeHours) }}</strong>
+          <button
+            class="remove-button"
+            mat-icon-button
+            color="warn"
+            type="button"
+            (click)="removeInterval(i)"
+          >
+            <mat-icon>backspace</mat-icon>
+          </button>
         </div>
 
-        <div #sliderTrack class="slider-track"></div>
-        <input
-          #inputSliderStart
-          type="range"
-          [min]="0"
-          [max]="MAX_SHIFT_HOURS"
-          step="0.5"
-          [(ngModel)]="startTimeHours"
-          (ngModelChange)="valueChanged()"
-        />
-        <input
-          #inputSliderEnd
-          type="range"
-          [min]="0"
-          [max]="MAX_SHIFT_HOURS"
-          [(ngModel)]="endTimeHours"
-          step="0.5"
-          (ngModelChange)="valueChanged()"
-        />
-        <div #sliderEnd class="slider-end">
-          End: <strong>{{ formatShiftTime(endTimeHours) }}</strong>
-        </div>
-        <!-- <div #workedHours class="hours-summary">
-          Worked: {{ getWorkedHours() | number: "1.1-1" }}h
-        </div> -->
-      </div>
+        <mat-divider class="interval-divider"></mat-divider>
+      }
     </div>
 
-    <p class="hours-summary">
-      You Worked: {{ getWorkedHours() | number: "1.1-1" }}h
-    </p>
+    <div class="add-button-container">
+      <button
+        class="add-button"
+        mat-fab
+        color="primary"
+        type="button"
+        (click)="addInterval()"
+      >
+        <mat-icon>add</mat-icon>
+      </button>
+    </div>
 
-    <mat-checkbox [(ngModel)]="isHoliday" style="margin-top: 8px"
-      >Is this day a holiday?</mat-checkbox
-    >
+    <div class="summary-row">
+      <p>Total hours: {{ totalHours | number: "1.1-1" }}h</p>
+      <p *ngIf="intervalError" class="error-text">{{ intervalError }}</p>
+    </div>
+
+    <mat-checkbox [(ngModel)]="isHoliday" style="margin-top: 8px">
+      Is this day a holiday?
+    </mat-checkbox>
 
     <div class="action-row">
       <button mat-button (click)="cancel()">Cancel</button>

@@ -1,3 +1,4 @@
+import { DragDropModule } from '@angular/cdk/drag-drop';
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -5,13 +6,13 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
+import { MatTooltip } from '@angular/material/tooltip';
 import {
   DayData,
   MonthData,
   PayrollService,
 } from '../../services/payroll.service';
 import { CalendarDayModalComponent } from './calendar-day-modal.component';
-
 @Component({
   selector: 'app-calendar',
   imports: [
@@ -21,6 +22,8 @@ import { CalendarDayModalComponent } from './calendar-day-modal.component';
     FormsModule,
     MatButtonModule,
     MatDialogModule,
+    MatTooltip,
+    DragDropModule,
   ],
   templateUrl: './calendar.component.html',
   styleUrl: './calendar.component.scss',

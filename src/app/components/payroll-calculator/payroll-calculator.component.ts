@@ -36,9 +36,9 @@ import { GuideComponent } from '../guide/guide.component';
   styleUrl: './payroll-calculator.component.scss',
 })
 export class PayrollCalculatorComponent implements OnInit {
-  baseHourlyRate: number = 5.64;
+  baseHourlyRate: number = 5.52;
   holidayMultiplier: number = 1.75;
-  baseTaxRate: number = 13.81; // 13.81% tax rate
+  baseTaxRate: number = 13.87; // 13.87% tax rate
 
   monthlyIncome: number = 0;
   breakdown: any = {

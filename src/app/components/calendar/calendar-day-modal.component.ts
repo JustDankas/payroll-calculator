@@ -9,6 +9,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
+import { SettingsService } from '../../services/settings.service';
 export interface DayInterval {
   start: number;
   end: number;
@@ -41,12 +42,17 @@ export class CalendarDayModalComponent {
   isHoliday: boolean;
   intervals: DayInterval[];
   intervalError = '';
+  hourFormat!: string;
   readonly hourOptions = Array.from({ length: 49 }, (_, i) => i * 0.5);
 
   constructor(
+    private readonly settingsService: SettingsService,
     public dialogRef: MatDialogRef<CalendarDayModalComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DayModalData,
   ) {
+    settingsService.hourFormat$.subscribe((hourFormat) => {
+      this.hourFormat = hourFormat;
+    });
     this.date = data.date;
     this.isHoliday = !!data.isHoliday;
     this.intervals = (data.intervals ?? []).map((interval) => ({
@@ -115,11 +121,26 @@ export class CalendarDayModalComponent {
   }
 
   formatTimeLabel(value: number): string {
+    if (this.hourFormat === '12') {
+      return this.formatTimeLabelTo12Hour(value);
+    } else {
+      return this.formatTimeLabelTo24Hour(value);
+    }
+  }
+
+  private formatTimeLabelTo12Hour(value: number) {
     const hours = Math.floor(value % 12);
     const timePeriod = value < 12 ? 'πμ' : 'μμ';
     const minutes = (value % 1) * 60;
     const paddedMinutes = minutes === 0 ? '00' : '30';
     return `${hours.toString().padStart(2, '0')}:${paddedMinutes} ${value == 24 ? 'πμ' : timePeriod}`;
+  }
+
+  private formatTimeLabelTo24Hour(value: number) {
+    const hours = Math.floor(value);
+    const minutes = (value % 1) * 60;
+    const paddedMinutes = minutes === 0 ? '00' : '30';
+    return `${hours.toString().padStart(2, '0')}:${paddedMinutes}`;
   }
 
   private sortIntervals(): void {

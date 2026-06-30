@@ -1,0 +1,22 @@
+<div class="fab-container">
+  <div class="fab-options" [class.open]="isOpen">
+    <!-- <button class="fab-sub-btn" (click)="openModal('profile')">
+      👤 <span class="tooltip">Profile</span>
+    </button> -->
+    <button class="fab-sub-btn" (click)="openSettingsDialog()">
+      <mat-icon>settings</mat-icon> <span class="tooltip">Settings</span>
+    </button>
+    <button class="fab-sub-btn" (click)="openInfoDialog()">
+      <mat-icon>info</mat-icon> <span class="tooltip">Info</span>
+    </button>
+  </div>
+
+  <button
+    mat-fab
+    class="fab-main-btn"
+    (click)="toggleMenu()"
+    [class.rotated]="isOpen"
+  >
+    <mat-icon>menu</mat-icon>
+  </button>
+</div>

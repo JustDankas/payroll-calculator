@@ -1,51 +1,207 @@
-<div class="modal-container">
-  <h3>Πληροφορίες</h3>
-  <mat-divider></mat-divider>
-  <div>
-    <p>Κατώτατος Μισθός</p>
-    <a
-      href="https://ypergasias.gov.gr/ergasiakes-scheseis/syllogikes-ergasiakes-sxeseis/katotatos-misthos/"
-      target="_blank"
-    >
-      https://ypergasias.gov.gr/ergasiakes-scheseis/syllogikes-ergasiakes-sxeseis/katotatos-misthos/
-    </a>
+<div style="padding: 12px">
+  <div class="modal-container">
+    <h1>Πληροφορίες</h1>
+    <mat-divider></mat-divider>
+    <div class="salary-summary-container">
+      <h2 class="summary-title">Σύνοψη Κανόνων Υπολογισμού & Νομοθεσίας</h2>
+      <p class="summary-intro">
+        Όλοι οι υπολογισμοί της πλατφόρμας βασίζονται αυστηρά στην ισχύουσα
+        ελληνική εργατική και φορολογική νομοθεσία (Έτος 2026). Παρακάτω θα
+        βρείτε μια ολοκληρωμένη σύνοψη των κανόνων, των μαθηματικών τύπων και
+        των δικαιωμάτων σας, όπως προκύπτουν από τις επίσημες πηγές.
+      </p>
+
+      <hr class="summary-divider" />
+
+      <div class="summary-section">
+        <h3>1. Βασικός Μισθός & Αλγόριθμος Ωρομισθίου</h3>
+        <p>
+          Ο γενικός <strong>κατώτατος μισθός</strong> στον ιδιωτικό τομέα
+          ανέρχεται στα <strong>920,00 € μικτά</strong> (για υπαλλήλους χωρίς
+          προϋπηρεσία/τριετίες).
+        </p>
+        <div class="formula-box">
+          <span class="formula-label"
+            >Νόμιμος Μαθηματικός Τύπος Ωρομισθίου:</span
+          >
+          <code class="formula-code"
+            >Ωρομίσθιο = (Μηνιαίος Μισθός × 6) ÷ (25 × 40) = Μηνιαίος Μισθός ÷
+            166,6667</code
+          >
+        </div>
+        <p>
+          Με βάση τον παραπάνω τύπο του Υπουργείου Εργασίας, το
+          <strong>βασικό κατώτατο ωρομίσθιο</strong> διαμορφώνεται ακριβώς στα
+          <strong>5,52 €</strong> μικτά.
+        </p>
+      </div>
+
+      <div class="summary-section">
+        <h3>2. Προσαυξήσεις: Κυριακές, Αργίες & Νύχτα</h3>
+        <p>
+          Όταν εργάζεστε σε ειδικές συνθήκες, το νόμιμο ωρομίσθιό σας
+          πολλαπλασιάζεται με τους εξής θεσμοθετημένους συντελεστές:
+        </p>
+        <ul>
+          <li>
+            <strong>Νυχτερινή Βαρδιά (Ώρες 22:00 έως 06:00):</strong> Προσαύξηση
+            <strong>+25%</strong> (Πολλαπλασιαστής: 1,25).
+          </li>
+          <li>
+            <strong>Κυριακές & Επίσημες Αργίες:</strong> Προσαύξηση
+            <strong>+75%</strong> (Πολλαπλασιαστής: 1,75). Σημειώνεται ότι
+            <strong
+              >όλες οι Κυριακές του έτους εξομοιώνονται νομικά με αργίες</strong
+            >
+            ως προς την προσαύξηση αμοιβής.
+          </li>
+          <li>
+            <strong>Συνδυασμός (Νύχτα Κυριακής/Αργίας):</strong> Οι προσαυξήσεις
+            λειτουργούν αθροιστικά (25% + 75% = <strong>+100%</strong>),
+            προσφέροντας διπλάσιο ωρομίσθιο (Πολλαπλασιαστής: 2,00).
+          </li>
+        </ul>
+        <p class="note-text">
+          ⚠️ <strong>Σημαντικό:</strong> Βάσει του Ν. 5184/2025, τα ποσά των
+          προσαυξήσεων αυτών απαλλάσσονται πλήρως από ασφαλιστικές κρατήσεις για
+          εργαζόμενους πλήρους απασχόλησης.
+        </p>
+      </div>
+
+      <div class="summary-section">
+        <h3>3. Ασφαλιστικές & Λοιπές Κρατήσεις</h3>
+        <p>
+          Από τον μεικτό μισθό σας παρακρατείται συνολικά ένα ποσοστό ύψους
+          <strong>13,87%</strong> για τις ασφαλιστικές σας εισφορές (ένσημα), το
+          οποίο αναλύεται ως εξής:
+        </p>
+        <table class="summary-table">
+          <thead>
+            <tr>
+              <th>Κλάδος Ασφάλισης</th>
+              <th>Ποσοστό Κράτησης</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Κύρια Σύνταξη (e-ΕΦΚΑ)</td>
+              <td>6,67%</td>
+            </tr>
+            <tr>
+              <td>Επικουρική Ασφάλιση (ΕΤΕΑΕΠ / ΤΕΚΑ)</td>
+              <td>3,00%</td>
+            </tr>
+            <tr>
+              <td>Υγειονομική Περίθαλψη (ΕΟΠΥΥ)</td>
+              <td>2,55%</td>
+            </tr>
+            <tr>
+              <td>Συνεισπραττόμενα (ΔΥΠΑ / πρώην ΟΑΕΔ)</td>
+              <td>1,65%</td>
+            </tr>
+            <tr class="table-total">
+              <td><strong>Σύνολο Βασικών Κρατήσεων</strong></td>
+              <td><strong>13,87%</strong></td>
+            </tr>
+          </tbody>
+        </table>
+        <p class="note-text">
+          *Αν υπάγεστε στα <strong>Βαρέα & Ανθυγιεινά</strong> (π.χ. μάγειροι),
+          το σύνολο των κρατήσεων ανέρχεται σε <strong>17,32%</strong> λόγω
+          πρόσθετων εισφορών σύνταξης (+3,45%).
+        </p>
+        <p>
+          Μετά την αφαίρεση των ασφαλιστικών κρατήσεων, εφαρμόζεται η επίσημη
+          κλίμακα <strong>Φόρου Μισθωτών Υπηρεσιών (ΦΜΥ)</strong> με βάση το
+          ετήσιο εισόδημά σας και ανάλογα με τα προστατευόμενα τέκνα
+          (αφορολόγητο).
+        </p>
+      </div>
+
+      <div class="summary-section">
+        <h3>4. Απόδειξη Πληρωμής, MyErgani & Δικαιώματα</h3>
+        <ul>
+          <li>
+            <strong>Απόδειξη Μισθοδοσίας:</strong> Ο εργοδότης υποχρεούται κατά
+            την εξόφληση να σας παραδίδει αναλυτική εκκαθαριστική απόδειξη
+            πληρωμής, όπου εμφανίζονται ξεχωριστά ο βασικός μισθός, οι ώρες
+            (απλές, νυχτερινές, Κυριακές), οι κρατήσεις ΕΦΚΑ και ο φόρος.
+          </li>
+          <li>
+            <strong>Έλεγχος στο MyErgani:</strong> Μπορείτε ανά πάσα στιγμή να
+            συνδεθείτε στην επίσημη πλατφόρμα
+            <a
+              href="https://myergani.gov.gr/"
+              target="_blank"
+              class="summary-link"
+              >myergani.gov.gr</a
+            >
+            με τους κωδικούς Taxisnet. Εκεί θα βρείτε καταγεγραμμένες τις
+            ακριβείς
+            <strong
+              >ώρες εργασίας, τις βάρδιες και τα δηλωθέντα ψηφιακά
+              ένσημα</strong
+            >
+            (Ψηφιακή Κάρτα Εργασίας).
+          </li>
+          <li>
+            <strong>Δυνατότητα Καταγγελίας:</strong> Εάν διαπιστώσετε ότι δεν
+            λαμβάνετε τη σωστή πληρωμή ή ότι οι ώρες σας δεν συμπίπτουν με το
+            MyErgani, έχετε το νόμιμο δικαίωμα να υποβάλετε επώνυμη ή ανώνυμη
+            καταγγελία στην <strong>Επιθεώρηση Εργασίας (ΣΕΠΕ)</strong> μέσω του
+            1555 ή του sepe.gov.gr, για τη διεκδίκηση των δεδουλευμένων σας και
+            την επιβολή κυρώσεων.
+          </li>
+        </ul>
+      </div>
+    </div>
+    <mat-divider></mat-divider>
+    <div>
+      <p>Κατώτατος Μισθός</p>
+      <a
+        href="https://ypergasias.gov.gr/ergasiakes-scheseis/syllogikes-ergasiakes-sxeseis/katotatos-misthos/"
+        target="_blank"
+      >
+        https://ypergasias.gov.gr/ergasiakes-scheseis/syllogikes-ergasiakes-sxeseis/katotatos-misthos/
+      </a>
+    </div>
+    <mat-divider></mat-divider>
+    <div>
+      <p>Ασφαλιστικές Εισφορές</p>
+      <a
+        href="https://ypergasias.gov.gr/koinoniki-asfalisi/asfalismenoi-eisfores-kai-paroches/asfalistikes-eisfores/"
+        target="_blank"
+      >
+        https://ypergasias.gov.gr/koinoniki-asfalisi/asfalismenoi-eisfores-kai-paroches/asfalistikes-eisfores/
+      </a>
+    </div>
+    <mat-divider></mat-divider>
+    <div>
+      <p>Επώνυμη καταγγελία στην Επιθεώρηση Εργασίας</p>
+      <a
+        href="https://www.gov.gr/ipiresies/ergasia-kai-asphalise/epitheorese-ergasias/eponume-kataggelia"
+        target="_blank"
+      >
+        https://www.gov.gr/ipiresies/ergasia-kai-asphalise/epitheorese-ergasias/eponume-kataggelia
+      </a>
+      <div class="space-between"></div>
+      <a
+        href="https://www.hli.gov.gr/ergasiakes-scheseis/ergazomenoi-ergasiakes-scheseis/katangelia2/"
+        target="_blank"
+      >
+        https://www.hli.gov.gr/ergasiakes-scheseis/ergazomenoi-ergasiakes-scheseis/katangelia2/
+      </a>
+    </div>
+    <mat-divider></mat-divider>
+    <div>
+      <p>Δεν ξέρεις το ωρομίσθιό σου? Μπες στο myergani:</p>
+      <a
+        href="https://www.gov.gr/ipiresies/epikheirematike-drasterioteta/elektronikos-phakelos-epikheireses/enemerose-ergazomenon-myergani"
+        target="_blank"
+      >
+        https://www.gov.gr/ipiresies/epikheirematike-drasterioteta/elektronikos-phakelos-epikheireses/enemerose-ergazomenon-myergani
+      </a>
+    </div>
+    <mat-divider></mat-divider>
   </div>
-  <mat-divider></mat-divider>
-  <div>
-    <p>Ασφαλιστικές Εισφορές</p>
-    <a
-      href="https://ypergasias.gov.gr/koinoniki-asfalisi/asfalismenoi-eisfores-kai-paroches/asfalistikes-eisfores/"
-      target="_blank"
-    >
-      https://ypergasias.gov.gr/koinoniki-asfalisi/asfalismenoi-eisfores-kai-paroches/asfalistikes-eisfores/
-    </a>
-  </div>
-  <mat-divider></mat-divider>
-  <div>
-    <p>Επώνυμη καταγγελία στην Επιθεώρηση Εργασίας</p>
-    <a
-      href="https://www.gov.gr/ipiresies/ergasia-kai-asphalise/epitheorese-ergasias/eponume-kataggelia"
-      target="_blank"
-    >
-      https://www.gov.gr/ipiresies/ergasia-kai-asphalise/epitheorese-ergasias/eponume-kataggelia
-    </a>
-    <div class="space-between"></div>
-    <a
-      href="https://www.hli.gov.gr/ergasiakes-scheseis/ergazomenoi-ergasiakes-scheseis/katangelia2/"
-      target="_blank"
-    >
-      https://www.hli.gov.gr/ergasiakes-scheseis/ergazomenoi-ergasiakes-scheseis/katangelia2/
-    </a>
-  </div>
-  <mat-divider></mat-divider>
-  <div>
-    <p>Δεν ξέρεις το ωρομίσθιό σου? Μπες στο myergani:</p>
-    <a
-      href="https://www.gov.gr/ipiresies/epikheirematike-drasterioteta/elektronikos-phakelos-epikheireses/enemerose-ergazomenon-myergani"
-      target="_blank"
-    >
-      https://www.gov.gr/ipiresies/epikheirematike-drasterioteta/elektronikos-phakelos-epikheireses/enemerose-ergazomenon-myergani
-    </a>
-  </div>
-  <mat-divider></mat-divider>
 </div>

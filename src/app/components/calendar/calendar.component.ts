@@ -12,6 +12,7 @@ import {
   MonthData,
   PayrollService,
 } from '../../services/payroll.service';
+import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 import { CalendarDayModalComponent } from './calendar-day-modal.component';
 @Component({
   selector: 'app-calendar',
@@ -33,7 +34,7 @@ export class CalendarComponent implements OnInit {
 
   daysArray: DayData[] = [];
   monthData: MonthData = {};
-  weekDays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  weekDays = ['Κυρ', 'Δευ', 'Τρι', 'Τετ', 'Πεμ', 'Παρ', 'Σαβ'];
 
   constructor(
     private payrollService: PayrollService,
@@ -94,7 +95,7 @@ export class CalendarComponent implements OnInit {
   }
 
   getMonthYearDisplay(): string {
-    return this.currentMonth.toLocaleDateString('en-US', {
+    return this.currentMonth.toLocaleDateString('el-GR', {
       month: 'long',
       year: 'numeric',
     });
@@ -140,9 +141,16 @@ export class CalendarComponent implements OnInit {
   }
 
   clearAllValues(): void {
-    if (confirm('Are you sure you want to clear all calendar values?')) {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      data: { message: 'Διαγραφή ολων των δεδομένων για τον μήνα?' },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (!result) {
+        return;
+      }
       this.payrollService.clearAllData();
-    }
+    });
   }
 
   onCellDrop(event: CdkDragDrop<DayData>) {

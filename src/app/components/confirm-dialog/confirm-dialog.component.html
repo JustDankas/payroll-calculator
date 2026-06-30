@@ -1,0 +1,12 @@
+<div class="modal-container">
+  <h1>Προσοχή</h1>
+  <mat-divider></mat-divider>
+  <p>{{ data.message }}</p>
+  <mat-divider></mat-divider>
+  <div class="button-row">
+    <button mat-button (click)="onCancel()" color="warn">Ακυρωση</button>
+    <button mat-button (click)="onConfirm()" color="primary">
+      Επιβεβαιώση
+    </button>
+  </div>
+</div>

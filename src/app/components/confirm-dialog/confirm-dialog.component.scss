@@ -1,0 +1,15 @@
+.modal-container {
+  width: 500px;
+  box-sizing: border-box;
+  padding: 32px;
+
+  h1,
+  p {
+    text-align: center;
+  }
+
+  .button-row {
+    display: flex;
+    justify-content: center;
+  }
+}

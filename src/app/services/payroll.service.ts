@@ -48,9 +48,14 @@ export class PayrollService {
 
   // Fixed holidays (month, day) - adjust based on your country
   private fixedHolidays: HolidayDate[] = [
-    { month: 0, day: 1, name: "New Year's Day" },
-    { month: 11, day: 25, name: 'Christmas' },
-    { month: 4, day: 1, name: 'Labor Day' },
+    { month: 0, day: 1, name: "New Year's Day" }, // Ιανουάριος (0)
+    { month: 0, day: 6, name: 'Epiphany' }, // Θεοφάνεια - Ιανουάριος (0)
+    { month: 2, day: 25, name: 'Independence Day' }, // 25η Μαρτίου - Μάρτιος (2)
+    { month: 4, day: 1, name: 'Labor Day' }, // Πρωτομαγιά - Μάιος (4)
+    { month: 7, day: 15, name: 'Assumption of Mary' }, // Δεκαπενταύγουστος - Αύγουστος (7)
+    { month: 9, day: 28, name: 'Ohi Day' }, // 28η Οκτωβρίου - Οκτώβριος (9)
+    { month: 11, day: 25, name: 'Christmas Day' }, // Χριστούγεννα - Δεκέμβριος (11)
+    { month: 11, day: 26, name: 'Synaxis of the Mother of God' }, // Επόμενη Χριστουγέννων - Δεκέμβριος (11)
   ];
 
   baseHourlyRate$ = this.baseHourlyRate.asObservable();

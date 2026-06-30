@@ -1,4 +1,4 @@
-import { DragDropModule } from '@angular/cdk/drag-drop';
+import { CdkDragDrop, DragDropModule } from '@angular/cdk/drag-drop';
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -143,5 +143,29 @@ export class CalendarComponent implements OnInit {
     if (confirm('Are you sure you want to clear all calendar values?')) {
       this.payrollService.clearAllData();
     }
+  }
+
+  onCellDrop(event: CdkDragDrop<DayData>) {
+    const sourceData = event.item.data; // Data of the cell being dragged
+    const targetData = event.container.data; // Data of the cell dropped into
+
+    // Prevent dropping onto the same cell or cross-month drops
+    if (!sourceData || !targetData || sourceData === targetData) {
+      return;
+    }
+
+    const findCell = this.daysArray.find(
+      (cell) => cell.date === targetData.date,
+    );
+    if (!findCell) {
+      return;
+    }
+
+    this.payrollService.setDayIntervals(findCell.date, sourceData.intervals);
+    this.payrollService.setDayHoliday(findCell.date, sourceData.isHoliday);
+  }
+
+  saveCellData(dayData: any) {
+    // Your logic to persist data updates to a service or state
   }
 }

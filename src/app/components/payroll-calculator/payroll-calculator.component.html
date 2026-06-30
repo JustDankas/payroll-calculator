@@ -44,6 +44,20 @@
           >
         </mat-form-field>
         <mat-form-field class="input-field">
+          <mat-label>Πολλαπλασιαστής Βραδινών Ωρών</mat-label>
+          <input
+            matInput
+            type="number"
+            [(ngModel)]="nightMultiplier"
+            (change)="onTaxRateChange()"
+            step="0.01"
+          />
+          <mat-hint class="info-hint"
+            >Τις βραδινές ώρες (10:00 μμ εώς 6:00 πμ), το ωρομίσθιό σας
+            πολλαπλασιάζεται επί 1.25.</mat-hint
+          >
+        </mat-form-field>
+        <mat-form-field class="input-field">
           <mat-label>Ποσοστό Μεικτών Κρατήσεων (%)</mat-label>
           <input
             matInput
@@ -60,53 +74,56 @@
 
         <div class="income-display">
           <div class="income-section">
-            <h3>Monthly Summary</h3>
+            <h3>Μηνιαίος Υπολογισμός</h3>
             <p class="summary-item">
-              Regular Hours: <strong>{{ breakdown.regularHours }} hours</strong>
+              Συνολικές Ώρες:
+              <strong>{{ breakdown.regularHours }} ώρες</strong>
             </p>
             <p class="summary-item">
-              Holiday Hours: <strong>{{ breakdown.holidayHours }} hours</strong>
+              Εκ των οποίων ήταν Αργίες/Κυριακές:
+              <strong>{{ breakdown.holidayHours }} ώρες</strong>
             </p>
             <p class="summary-item">
-              Night Hours: <strong>{{ breakdown.nightHours }} hours</strong>
+              Εκ των οποίων ήταν Βραδινές:
+              <strong>{{ breakdown.nightHours }} ώρες</strong>
             </p>
             <mat-divider></mat-divider>
             <p class="summary-item">
-              Regular Pay:
+              Βασικές Εισφορές Ωρών:
               <strong>{{ formatCurrency(breakdown.regularPay) }}</strong>
             </p>
             <p class="summary-item after-tax">
-              (After Tax) Regular Pay:
+              (Μετά από Φόρους) Βασικές Εισφορές Ωρών:
               <strong class="net-pay">{{
                 formatCurrency(breakdown.regularPay * (1 - baseTaxRate / 100))
               }}</strong>
             </p>
             <p class="summary-item">
-              Holiday Pay:
+              Μπόνους από Αργίες/Κυριακές:
               <strong>{{ formatCurrency(breakdown.holidayPay) }}</strong>
             </p>
             <p class="summary-item after-tax">
-              (After Tax) Holiday Pay:
+              (Μετά από Φόρους) Μπόνους από Αργίες/Κυριακές:
               <strong class="net-pay">{{
                 formatCurrency(breakdown.holidayPay * (1 - baseTaxRate / 100))
               }}</strong>
             </p>
             <p class="summary-item">
-              Night Premium Pay:
+              Μπόνους από Βραδινές:
               <strong>{{ formatCurrency(breakdown.nightPay) }}</strong>
             </p>
             <p class="summary-item after-tax">
-              (After Tax) Night Premium Pay:
+              (Μετά από Φόρους) Μπόνους από Βραδινές:
               <strong class="net-pay">{{
                 formatCurrency(breakdown.nightPay * (1 - baseTaxRate / 100))
               }}</strong>
             </p>
             <mat-divider></mat-divider>
             <h2 class="total-income">
-              Gross Total: {{ formatCurrency(monthlyIncome) }}
+              Μεικτά: {{ formatCurrency(monthlyIncome) }}
             </h2>
             <h2 class="total-income net-pay">
-              Net Total:
+              Καθαρά:
               {{ formatCurrency(monthlyIncome * (1 - baseTaxRate / 100)) }}
             </h2>
           </div>

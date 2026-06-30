@@ -22,25 +22,43 @@
     </div>
 
     <!-- Day Headers -->
-    <div class="calendar-grid">
+    <div class="calendar-grid" cdkDropListGroup>
       <div class="day-header" *ngFor="let day of weekDays">
         <span [class.weekend]="day === 'Sun' || day === 'Sat'">{{ day }}</span>
       </div>
 
-      <!-- Day Cells -->
       <div
+        *ngFor="let dayData of daysArray; let i = index"
         class="day-cell"
-        (click)="
-          isDayInCurrentMonth(dayData.date) && onCellClick(dayData, $event)
-        "
-        *ngFor="let dayData of daysArray"
         [class.other-month]="!isDayInCurrentMonth(dayData.date)"
         [class.holiday]="dayData.isHoliday && isDayInCurrentMonth(dayData.date)"
         [class.weekend]="
           (dayData.date.getDay() === 0 || dayData.date.getDay() === 6) &&
           isDayInCurrentMonth(dayData.date)
         "
+        (click)="
+          isDayInCurrentMonth(dayData.date) && onCellClick(dayData, $event)
+        "
+        cdkDropList
+        [cdkDropListData]="dayData"
+        (cdkDropListDropped)="onCellDrop($event)"
+        [cdkDropListDisabled]="!isDayInCurrentMonth(dayData.date)"
       >
+        <div
+          class="cell-drag-overlay"
+          cdkDrag
+          [cdkDragData]="dayData"
+          [cdkDragDisabled]="
+            !isDayInCurrentMonth(dayData.date) || !dayData.hours
+          "
+        >
+          <div *cdkDragPreview class="drag-preview">
+            {{ dayData.hours ? (dayData.hours | number: "1.1-1") + "h" : "" }}
+          </div>
+
+          <div *cdkDragPlaceholder class="drag-placeholder"></div>
+        </div>
+
         <div class="day-number" *ngIf="isDayInCurrentMonth(dayData.date)">
           {{ dayData.date.getDate() }}
         </div>
@@ -51,8 +69,6 @@
           </span>
         </div>
       </div>
-      <!-- Day Cells -->
     </div>
-    <!-- Day Headers -->
   </mat-card-content>
 </mat-card>

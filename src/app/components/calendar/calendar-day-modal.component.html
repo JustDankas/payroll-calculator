@@ -61,6 +61,7 @@
       <button
         class="add-button"
         mat-fab
+        matTooltip="Προσθήκη"
         color="primary"
         type="button"
         (click)="addInterval()"
@@ -71,18 +72,24 @@
 
     <div class="summary-row">
       <p class="total-hours">
-        Total hours: {{ totalHours | number: "1.1-1" }}h
+        Συνολικές Ώρες: {{ totalHours | number: "1.1-1" }}h
       </p>
       <p *ngIf="intervalError" class="error-text">{{ intervalError }}</p>
     </div>
 
-    <mat-checkbox [(ngModel)]="isHoliday" style="margin-top: 8px">
-      Is this day a holiday?
+    <mat-checkbox
+      color="primary"
+      [(ngModel)]="isHoliday"
+      style="margin-top: 8px"
+    >
+      Είναι αυτή η μέρα αργία?
     </mat-checkbox>
 
     <div class="action-row">
-      <button mat-button (click)="cancel()">Cancel</button>
-      <button mat-flat-button color="primary" (click)="save()">Save</button>
+      <button mat-button (click)="cancel()">Ακύρωση</button>
+      <button mat-flat-button color="primary" (click)="save()">
+        Αποθήκευση
+      </button>
     </div>
   </div>
 </div>

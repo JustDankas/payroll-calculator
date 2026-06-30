@@ -10,7 +10,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { PayrollService } from '../../services/payroll.service';
+import { IBreakdown, PayrollService } from '../../services/payroll.service';
 import { CalendarComponent } from '../calendar/calendar.component';
 import { GuideComponent } from '../guide/guide.component';
 
@@ -38,14 +38,17 @@ import { GuideComponent } from '../guide/guide.component';
 export class PayrollCalculatorComponent implements OnInit {
   baseHourlyRate: number = 5.52;
   holidayMultiplier: number = 1.75;
+  nightMultiplier: number = 1.25;
   baseTaxRate: number = 13.87; // 13.87% tax rate
 
   monthlyIncome: number = 0;
-  breakdown: any = {
+  breakdown: IBreakdown = {
     regularHours: 0,
     holidayHours: 0,
     regularPay: 0,
     holidayPay: 0,
+    nightHours: 0,
+    nightPay: 0,
   };
 
   constructor(private payrollService: PayrollService) {}
@@ -61,6 +64,10 @@ export class PayrollCalculatorComponent implements OnInit {
       this.updateIncome();
     });
 
+    this.payrollService.nightMultiplier$.subscribe((multiplier) => {
+      this.nightMultiplier = multiplier;
+      this.updateIncome();
+    });
     this.payrollService.monthData$.subscribe((data) => {
       this.updateIncome();
     });

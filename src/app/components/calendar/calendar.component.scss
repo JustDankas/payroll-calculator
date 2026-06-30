@@ -2,8 +2,8 @@
 
 .calendar-card {
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-  border: none; // Removed hard border
-  background-color: #fafbfe; // Off-white modern tone
+  border: none;
+  background-color: #fafbfe;
   border-radius: 16px;
   width: min(100%, 1200px);
   max-width: 1200px;
@@ -69,42 +69,68 @@
       letter-spacing: 1px;
 
       .weekend {
-        color: $primary-color; // Highlights weekend headers in primary color
+        color: $primary-color;
       }
     }
 
     .day-cell {
       aspect-ratio: 1;
       min-width: 0;
-      border: 1px solid rgba(0, 0, 0, 0.06); // Much softer border line
+      border: 1px solid rgba(0, 0, 0, 0.06);
       border-radius: 12px;
       padding: 10px;
       display: flex;
       flex-direction: column;
       background-color: white;
-      position: relative;
-      //   min-height: 125px;
+      position: relative; // Crucial for the absolute overlay child
       transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
       cursor: pointer;
 
-      // Smooth hover state elevating the day block
       &:hover {
         border-color: $primary-color;
         transform: translateY(-2px);
         box-shadow: 0 6px 16px rgba(63, 81, 181, 0.12);
 
-        // Reveals actions only when hovering!
         .actions-container {
           opacity: 1;
           transform: scale(1);
         }
       }
 
+      // 1. While ANY cell is being dragged, make ALL valid cells show a very faint dashed cue
+      &.cdk-drop-list-dragging {
+        border-style: dashed;
+        border-color: rgba(0, 0, 0, 0.15);
+      }
+
+      // 2. TARGET LOCK: Light up ONLY the cell the mouse is currently hovering over
+      &.cdk-drop-list-receiving {
+        border: 2px dashed $primary-color !important;
+        background-color: rgba(
+          63,
+          81,
+          181,
+          0.04
+        ) !important; // Light blue tint shift
+        transition: all 0.25s ease;
+
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(63, 81, 181, 0.15);
+
+        // Ensure the inner numbers/content don't look weird under a 2px border
+        // padding: 9px;
+      }
+
+      // &.cdk-drop-list-receiving .holiday {
+      //   border-color: rgba(255, 193, 7, 0.4) !important;
+      //   background-color: red;
+      // }
+
       &.weekend {
-        background-color: #f0f2ff; // Pastel soft indigo/blue for weekends
+        background-color: #f0f2ff;
 
         .day-number {
-          color: $primary-color; // Highlights the weekend number instead
+          color: $primary-color;
         }
       }
 
@@ -115,14 +141,14 @@
         cursor: not-allowed;
         box-shadow: none !important;
         transform: none !important;
+
+        .cell-drag-overlay {
+          display: none; // Disable overlay entirely on buffer cells
+        }
       }
 
       &.holiday {
-        background: linear-gradient(
-          135deg,
-          #fffbeb,
-          #fef3c7
-        ); // High-end warm cream/amber tone
+        background: linear-gradient(135deg, #fffbeb, #fef3c7);
         border-color: rgba(255, 193, 7, 0.4);
 
         .day-number {
@@ -135,11 +161,36 @@
         }
       }
 
+      /* ABSOLUTE DUMMY DRAG OVERLAY STRATEGY */
+      .cell-drag-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 10; // Sits over the content to intercept mouse actions cleanly
+        border-radius: 12px;
+
+        &:not([cdkdragdisabled]) {
+          cursor: grab;
+        }
+        &:active {
+          cursor: grabbing;
+        }
+      }
+
+      /* Empty placeholder styling to prevent layout shifts */
+      .drag-placeholder {
+        display: none;
+      }
+
       .day-number {
         font-weight: 700;
         font-size: 14px;
         color: $text-primary;
-        margin-bottom: auto; // Pushes content below down
+        margin-bottom: auto;
+        position: relative;
+        z-index: 1; // Sits under the overlay handler
       }
 
       .day-content {
@@ -149,14 +200,8 @@
         justify-content: center;
         width: 100%;
         margin-top: auto;
-
-        .hours-label {
-          display: none;
-        }
-
-        .hours-input {
-          display: none;
-        }
+        position: relative;
+        z-index: 1; // Sits under the overlay handler
 
         .hours-display {
           display: block;
@@ -167,7 +212,6 @@
           letter-spacing: -0.2px;
         }
 
-        // Action container starts invisible and smoothly transitions in
         .actions-container {
           display: flex;
           gap: 6px;
@@ -177,9 +221,9 @@
           transform: scale(0.95);
           transition: all 0.2s ease;
           margin-top: 4px;
+          z-index: 20; // Keeps action buttons clickable above drag layer if needed
         }
 
-        // Modernizes raw action buttons into minimal, clean Material toggles
         .base-hours-btn {
           background-color: #f1f5f9;
           border-radius: 8px;
@@ -205,7 +249,7 @@
           }
 
           &:last-child:hover {
-            background-color: #fee2e2; // Subtle red accent when hovering "Clear"
+            background-color: #fee2e2;
             color: #ef4444;
           }
         }
@@ -214,23 +258,34 @@
   }
 }
 
+/* Floating preview window adjustments */
+.drag-preview {
+  background-color: $primary-color;
+  width: 80px;
+  height: 80px;
+  border-radius: 12px;
+  color: white;
+  box-shadow:
+    0 5px 5px -3px rgba(0, 0, 0, 0.2),
+    0 8px 10px 1px rgba(0, 0, 0, 0.14),
+    0 3px 14px 2px rgba(0, 0, 0, 0.12);
+  font-size: 16px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Responsiveness adjustments */
 @media (max-width: 900px) {
   .calendar-card {
     padding: 20px;
-
     .calendar-grid {
       gap: 4px;
-
       .day-cell {
-        min-height: 100px;
+        min-height: 70px;
         padding: 4px;
         font-size: 12px;
-
-        .hours-input {
-          width: 100%;
-          font-size: 14px;
-        }
-
         .day-number {
           font-size: 12px;
         }
@@ -242,34 +297,27 @@
 @media (max-width: 600px) {
   .calendar-card {
     padding: 16px;
-
     .month-header {
       flex-wrap: wrap;
       gap: 10px;
     }
-
     .calendar-grid {
-      //   gap: 4px;
-
       .day-cell {
-        min-height: none;
+        min-height: unset;
         padding: 4px;
-        font-size: 12px;
-        width: 56px;
-
-        .hours-input {
-          display: none;
-        }
-
+        width: 45px;
+        height: 54px !important;
         .hours-display {
-          display: block !important;
-          font-size: 12px;
+          font-size: 12px !important;
         }
-
         .day-number {
           font-size: 12px;
         }
       }
     }
+  }
+  .drag-preview {
+    width: 45px;
+    height: 45px;
   }
 }

@@ -2,6 +2,15 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { LocalStorageService } from './localstorage.service';
 
+export interface IBreakdown {
+  regularHours: number;
+  holidayHours: number;
+  regularPay: number;
+  holidayPay: number;
+  nightHours: number;
+  nightPay: number;
+}
+
 export interface DayInterval {
   start: number;
   end: number;
@@ -30,8 +39,9 @@ export interface HolidayDate {
 export class PayrollService {
   private readonly localStorageService = new LocalStorageService();
 
-  private baseHourlyRate = new BehaviorSubject<number>(5.64);
+  private baseHourlyRate = new BehaviorSubject<number>(5.52);
   private holidayMultiplier = new BehaviorSubject<number>(1.75);
+  private nightMultiplier = new BehaviorSubject<number>(1.25);
   private baseTaxRate = new BehaviorSubject<number>(13.81);
   private currentMonth = new BehaviorSubject<Date>(new Date());
   private monthData = new BehaviorSubject<MonthData>({});
@@ -45,6 +55,7 @@ export class PayrollService {
 
   baseHourlyRate$ = this.baseHourlyRate.asObservable();
   holidayMultiplier$ = this.holidayMultiplier.asObservable();
+  nightMultiplier$ = this.nightMultiplier.asObservable();
   baseTaxRate$ = this.baseTaxRate.asObservable();
   currentMonth$ = this.currentMonth.asObservable();
   monthData$ = this.monthData.asObservable();
@@ -92,6 +103,9 @@ export class PayrollService {
 
   setHolidayMultiplier(multiplier: number): void {
     this.holidayMultiplier.next(multiplier);
+  }
+  setNightMultiplier(multiplier: number): void {
+    this.nightMultiplier.next(multiplier);
   }
 
   setBaseTaxRate(taxRate: number): void {
@@ -282,53 +296,49 @@ export class PayrollService {
 
   calculateMonthlyIncome(): number {
     const baseRate = this.baseHourlyRate.value;
-    const multiplier = this.holidayMultiplier.value;
-    const nightBonus = 0.25;
+    const holidayMul = this.holidayMultiplier.value - 1;
+    const nightMul = this.nightMultiplier.value - 1;
 
     let total = 0;
     Object.values(this.monthData.value).forEach((dayData) => {
-      const basePay = dayData.hours * baseRate;
-      const holidayPay = dayData.isHoliday ? basePay * (multiplier - 1) : 0;
       const nightHours = this.getNightHours(dayData.intervals);
-      const nightPay = nightHours * baseRate * nightBonus;
+      const regularHours = dayData.hours;
+
+      const basePay = regularHours * baseRate;
+      const holidayPay = dayData.isHoliday ? basePay * holidayMul : 0;
+      const nightPay = nightHours * baseRate * nightMul;
       total += basePay + holidayPay + nightPay;
     });
 
     return total;
   }
 
-  getMonthlyBreakdown(): {
-    regularHours: number;
-    holidayHours: number;
-    nightHours: number;
-    regularPay: number;
-    holidayPay: number;
-    nightPay: number;
-  } {
+  getMonthlyBreakdown(): IBreakdown {
     const baseRate = this.baseHourlyRate.value;
-    const multiplier = this.holidayMultiplier.value;
-    const nightBonus = 0.25;
+    const holidayMul = this.holidayMultiplier.value - 1;
+    const nightMul = this.nightMultiplier.value - 1;
 
-    let regularHours = 0;
+    let totalHours = 0;
     let holidayHours = 0;
     let nightHours = 0;
 
     Object.values(this.monthData.value).forEach((dayData) => {
       if (dayData.isHoliday) {
         holidayHours += dayData.hours;
-      } else {
-        regularHours += dayData.hours;
       }
+
+      totalHours += dayData.hours;
       nightHours += this.getNightHours(dayData.intervals);
+      // regularHours += Math.max(dayData.hours - nightHours - holidayHours, 0);
     });
 
     return {
-      regularHours,
+      regularHours: totalHours,
       holidayHours,
       nightHours,
-      regularPay: regularHours * baseRate,
-      holidayPay: holidayHours * baseRate * multiplier,
-      nightPay: nightHours * baseRate * nightBonus,
+      regularPay: totalHours * baseRate,
+      holidayPay: holidayHours * baseRate * holidayMul,
+      nightPay: nightHours * baseRate * nightMul,
     };
   }
 

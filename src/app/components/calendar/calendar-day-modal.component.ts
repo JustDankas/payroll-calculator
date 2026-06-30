@@ -9,6 +9,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
+import { MatTooltip } from '@angular/material/tooltip';
 import { SettingsService } from '../../services/settings.service';
 export interface DayInterval {
   start: number;
@@ -33,6 +34,7 @@ export interface DayModalData {
     MatInputModule,
     MatIconModule,
     MatDividerModule,
+    MatTooltip,
   ],
   templateUrl: './calendar-day-modal.component.html',
   styleUrls: ['./calendar-day-modal.component.scss'],

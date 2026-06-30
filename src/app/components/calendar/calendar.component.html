@@ -10,8 +10,13 @@
       <button mat-icon-button (click)="nextMonth()">
         <mat-icon>chevron_right</mat-icon>
       </button>
-      <button mat-raised-button color="warn" (click)="clearAllValues()">
-        Clear All
+      <button
+        class="clear-button"
+        mat-icon-button
+        color="error"
+        (click)="clearAllValues()"
+      >
+        <mat-icon>clear</mat-icon>
       </button>
     </div>
 

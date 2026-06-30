@@ -13,9 +13,11 @@
               (valueChange)="updateInterval(i, 'start', $event)"
             >
               @for (hour of hourOptions; track hour) {
-                <mat-option [value]="hour">{{
-                  formatTimeLabel(hour)
-                }}</mat-option>
+                <mat-option
+                  [value]="hour"
+                  [class.end-hour]="interval.end === hour"
+                  >{{ formatTimeLabel(hour) }}</mat-option
+                >
               }
             </mat-select>
           </mat-form-field>
@@ -27,9 +29,12 @@
               (valueChange)="updateInterval(i, 'end', $event)"
             >
               @for (hour of hourOptions; track hour) {
-                <mat-option [value]="hour">{{
-                  formatTimeLabel(hour)
-                }}</mat-option>
+                <mat-option
+                  [value]="hour"
+                  [class.start-hour]="interval.start === hour"
+                >
+                  {{ formatTimeLabel(hour) }}
+                </mat-option>
               }
             </mat-select>
           </mat-form-field>
@@ -65,7 +70,9 @@
     </div>
 
     <div class="summary-row">
-      <p>Total hours: {{ totalHours | number: "1.1-1" }}h</p>
+      <p class="total-hours">
+        Total hours: {{ totalHours | number: "1.1-1" }}h
+      </p>
       <p *ngIf="intervalError" class="error-text">{{ intervalError }}</p>
     </div>
 

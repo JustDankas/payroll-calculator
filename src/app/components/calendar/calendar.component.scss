@@ -43,6 +43,11 @@
         background-color: rgba(63, 81, 181, 0.1);
       }
     }
+
+    .clear-button {
+      border-radius: 8px;
+      color: $error-light;
+    }
   }
 
   .calendar-grid {

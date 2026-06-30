@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { LocalStorageService } from './localstorage.service';
 
 export interface DayInterval {
   start: number;
@@ -27,6 +28,8 @@ export interface HolidayDate {
   providedIn: 'root',
 })
 export class PayrollService {
+  private readonly localStorageService = new LocalStorageService();
+
   private baseHourlyRate = new BehaviorSubject<number>(5.64);
   private holidayMultiplier = new BehaviorSubject<number>(1.75);
   private baseTaxRate = new BehaviorSubject<number>(13.81);
@@ -47,7 +50,40 @@ export class PayrollService {
   monthData$ = this.monthData.asObservable();
 
   constructor() {
-    this.initializeMonth();
+    if (
+      !this.localStorageService.exists(
+        this.serializeDate(this.currentMonth.value),
+      )
+    ) {
+      this.initializeMonth();
+    }
+
+    this.currentMonth$.subscribe((deserializedDate) => {
+      const date = this.serializeDate(deserializedDate);
+      const data = this.localStorageService.getItem<MonthData>(date);
+      if (data && Object.keys(data).length > 0) {
+        this.monthData.next(data);
+      } else {
+        this.initializeMonth();
+      }
+    });
+
+    this.monthData$.subscribe((data) => {
+      this.localStorageService.setItem(
+        this.serializeDate(this.currentMonth.value),
+        data,
+      );
+    });
+  }
+
+  serializeDate(date: Date): string {
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    return `${year}-${month}`;
+  }
+
+  deserializeDate(date: string): Date {
+    return new Date(date);
   }
 
   setBaseHourlyRate(rate: number): void {
@@ -64,7 +100,6 @@ export class PayrollService {
 
   setCurrentMonth(date: Date): void {
     this.currentMonth.next(date);
-    this.initializeMonth();
   }
 
   goToNextMonth(): void {

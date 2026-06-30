@@ -1,3 +1,5 @@
+@import "../../../styles/colors";
+
 .modal-container {
   width: 500px;
   box-sizing: border-box;
@@ -280,4 +282,28 @@ input[type="range"]:active::-webkit-slider-thumb {
 
   max-height: 300px; /* Adjust as needed */
   overflow-y: auto; /* Enables vertical scrolling */
+}
+.total-hours {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.87);
+}
+::ng-deep .mat-mdc-option.start-hour {
+  /* Changes the text and icon color */
+  background-color: #c1c5ff !important;
+
+  /* Optional: Changes the background color on hover if it's invalid */
+  // &:hover {
+  //   background-color: #e2e4fe !important;
+  // }
+}
+
+::ng-deep .mat-mdc-option.end-hour {
+  /* Changes the text and icon color */
+  background-color: #ffc1c1 !important;
+
+  /* Optional: Changes the background color on hover if it's invalid */
+  // &:hover {
+  //   background-color: #e2e4fe !important;
+  // }
 }

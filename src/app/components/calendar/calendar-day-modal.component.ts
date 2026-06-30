@@ -80,14 +80,23 @@ export class CalendarDayModalComponent {
 
   updateInterval(index: number, field: 'start' | 'end', event: number): void {
     this.intervals[index][field] = this.clampHour(event);
+    // this.sortIntervals();
+    this.trimIntervals(index, field);
+    this.validateIntervals();
+  }
+
+  private trimIntervals(index: number, field: 'start' | 'end'): void {
     if (field === 'start') {
       this.intervals[index].end = Math.max(
         this.intervals[index].end,
         this.intervals[index].start,
       );
+    } else {
+      this.intervals[index].start = Math.min(
+        this.intervals[index].end,
+        this.intervals[index].start,
+      );
     }
-    // this.sortIntervals();
-    this.validateIntervals();
   }
 
   save(): void {
@@ -106,10 +115,11 @@ export class CalendarDayModalComponent {
   }
 
   formatTimeLabel(value: number): string {
-    const hours = Math.floor(value);
+    const hours = Math.floor(value % 12);
+    const timePeriod = value < 12 ? 'πμ' : 'μμ';
     const minutes = (value % 1) * 60;
     const paddedMinutes = minutes === 0 ? '00' : '30';
-    return `${hours.toString().padStart(2, '0')}:${paddedMinutes}`;
+    return `${hours.toString().padStart(2, '0')}:${paddedMinutes} ${value == 24 ? 'πμ' : timePeriod}`;
   }
 
   private sortIntervals(): void {

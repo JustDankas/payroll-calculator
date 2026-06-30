@@ -63,13 +63,13 @@
           <div class="income-section">
             <h3>Monthly Summary</h3>
             <p class="summary-item">
-              Regular Hours: <strong>{{ breakdown.regularHours }}</strong>
+              Regular Hours: <strong>{{ breakdown.regularHours }} hours</strong>
             </p>
             <p class="summary-item">
-              Holiday Hours: <strong>{{ breakdown.holidayHours }}</strong>
+              Holiday Hours: <strong>{{ breakdown.holidayHours }} hours</strong>
             </p>
             <p class="summary-item">
-              Night Hours: <strong>{{ breakdown.nightHours }}</strong>
+              Night Hours: <strong>{{ breakdown.nightHours }} hours</strong>
             </p>
             <mat-divider></mat-divider>
             <p class="summary-item">
@@ -78,7 +78,7 @@
             </p>
             <p class="summary-item after-tax">
               (After Tax) Regular Pay:
-              <strong>{{
+              <strong class="net-pay">{{
                 formatCurrency(breakdown.regularPay * (1 - baseTaxRate / 100))
               }}</strong>
             </p>
@@ -88,7 +88,7 @@
             </p>
             <p class="summary-item after-tax">
               (After Tax) Holiday Pay:
-              <strong>{{
+              <strong class="net-pay">{{
                 formatCurrency(breakdown.holidayPay * (1 - baseTaxRate / 100))
               }}</strong>
             </p>
@@ -98,7 +98,7 @@
             </p>
             <p class="summary-item after-tax">
               (After Tax) Night Premium Pay:
-              <strong>{{
+              <strong class="net-pay">{{
                 formatCurrency(breakdown.nightPay * (1 - baseTaxRate / 100))
               }}</strong>
             </p>
@@ -106,7 +106,7 @@
             <h2 class="total-income">
               Gross Total: {{ formatCurrency(monthlyIncome) }}
             </h2>
-            <h2 class="total-income">
+            <h2 class="total-income net-pay">
               Net Total:
               {{ formatCurrency(monthlyIncome * (1 - baseTaxRate / 100)) }}
             </h2>

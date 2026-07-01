@@ -97,6 +97,10 @@ export class PayrollService {
           this.serializeDate(this.currentMonth.value),
           data,
         );
+      } else {
+        this.localStorageService.removeItem(
+          this.serializeDate(this.currentMonth.value),
+        );
       }
     });
   }
@@ -358,7 +362,6 @@ export class PayrollService {
 
   clearAllData(): void {
     this.initializeMonth();
-    localStorage.removeItem(this.serializeDate(this.currentMonth.value));
   }
 
   private clampHour(value: number): number {

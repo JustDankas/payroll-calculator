@@ -88,14 +88,18 @@
       }
 
       .inline-icon {
-        font-size: 14px;
-        width: 14px;
-        height: 14px;
+        font-size: 16px;
+        width: 16px;
+        height: 16px;
         vertical-align: middle;
         color: $primary-color;
 
         &::nth-of-type(2) {
           color: #ef4444;
+        }
+
+        &.warn {
+          color: $error-main;
         }
       }
     }

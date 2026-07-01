@@ -85,10 +85,19 @@ export class PayrollService {
     });
 
     this.monthData$.subscribe((data) => {
-      this.localStorageService.setItem(
-        this.serializeDate(this.currentMonth.value),
-        data,
-      );
+      const hasIntervals = Object.keys(data).some((key) => {
+        const dayData = data[key];
+        if (dayData.intervals.length > 0) {
+          return true;
+        }
+        return false;
+      });
+      if (hasIntervals) {
+        this.localStorageService.setItem(
+          this.serializeDate(this.currentMonth.value),
+          data,
+        );
+      }
     });
   }
 
@@ -349,6 +358,7 @@ export class PayrollService {
 
   clearAllData(): void {
     this.initializeMonth();
+    localStorage.removeItem(this.serializeDate(this.currentMonth.value));
   }
 
   private clampHour(value: number): number {

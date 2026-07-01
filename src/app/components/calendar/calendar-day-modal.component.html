@@ -5,7 +5,13 @@
     <div class="interval-list">
       @for (interval of intervals; let i = $index; track i) {
         <div class="interval-row">
-          <mat-form-field>
+          <button mat-raised-button (click)="openTimePicker(i, 'start')">
+            {{ formatTimeLabel(interval.start) }}
+          </button>
+          <button mat-raised-button (click)="openTimePicker(i, 'end')">
+            {{ formatTimeLabel(interval.end) }}
+          </button>
+          <!-- <mat-form-field>
             <mat-label>Start</mat-label>
 
             <mat-select
@@ -20,8 +26,8 @@
                 >
               }
             </mat-select>
-          </mat-form-field>
-          <mat-form-field>
+          </mat-form-field> -->
+          <!-- <mat-form-field>
             <mat-label>End</mat-label>
 
             <mat-select
@@ -37,9 +43,9 @@
                 </mat-option>
               }
             </mat-select>
-          </mat-form-field>
+          </mat-form-field> -->
           <span class="interval-duration"
-            >{{ interval.end - interval.start | number: "1.1-1" }}h</span
+            >{{ interval.end - interval.start | number: "1.1-1" }} ω</span
           >
 
           <button
@@ -72,7 +78,7 @@
 
     <div class="summary-row">
       <p class="total-hours">
-        Συνολικές Ώρες: {{ totalHours | number: "1.1-1" }}h
+        Συνολικές Ώρες: {{ totalHours | number: "1.1-1" }}
       </p>
       <p *ngIf="intervalError" class="error-text">{{ intervalError }}</p>
     </div>

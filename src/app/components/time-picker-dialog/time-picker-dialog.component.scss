@@ -1,0 +1,128 @@
+@import "../../../styles/colors";
+
+.modal-container {
+  width: 600px;
+  box-sizing: border-box;
+  padding: 12px;
+  overflow-x: hidden;
+}
+.time-picker-container {
+  display: flex;
+  gap: 24px;
+  padding: 32px;
+  width: 100%;
+  font-family: inherit;
+  overflow: hidden;
+  overflow-y: auto;
+  max-height: 400px;
+
+  h3 {
+    margin-top: 0;
+    margin-bottom: 12px;
+    font-size: 0.875rem;
+    color: $text-secondary;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+}
+
+.hours-section {
+  flex: 3;
+}
+
+.divider {
+  width: 1px;
+  background-color: $border-color;
+  align-self: stretch;
+}
+
+.minutes-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+// 4 Columns for hours grid to nicely map out the 24 hours
+.hours-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+
+// Stacked layout for minutes options
+.minutes-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  height: 100%;
+}
+
+// Base chip interaction design
+.time-chip {
+  background-color: #ffffff;
+  border: 1px solid $border-color;
+  color: $text-primary;
+  padding: 10px 4px;
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  text-align: center;
+
+  &:hover {
+    background-color: $primary-light;
+    border-color: rgba($primary-color, 0.3);
+  }
+
+  // Active Selected State
+  &.active {
+    background-color: $primary-color !important;
+    border-color: $primary-color !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 6px -1px rgba($primary-color, 0.2);
+  }
+
+  // Night Shift modifier (0-6 AM, 10-12 PM)
+  &.night-shift {
+    background-color: mix($text-primary, #ffffff, 8%); // Darker soft tint
+    border-color: mix($text-primary, $border-color, 15%);
+    color: mix($text-primary, #000000, 80%);
+
+    &:hover {
+      background-color: mix($primary-color, $text-primary, 15%);
+      color: #ffffff;
+    }
+  }
+}
+
+.minute-chip {
+  padding: 16px 0;
+  font-size: 1.1rem;
+}
+
+// Dialog Actions styling
+mat-dialog-actions {
+  padding: 16px 0 0 0;
+  border-top: 1px solid $border-color;
+
+  .btn-cancel {
+    color: $error-light;
+  }
+  .btn-confirm {
+    background-color: $primary-color;
+    color: #ffffff;
+  }
+}
+
+@media (max-width: 900px) {
+  .modal-container {
+    width: 100%;
+    padding: 8px;
+
+    .time-picker-container {
+      flex-direction: column;
+      padding: 16px;
+    }
+  }
+}

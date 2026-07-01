@@ -3,7 +3,11 @@ import { Component, Inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import {
+  MAT_DIALOG_DATA,
+  MatDialog,
+  MatDialogRef,
+} from '@angular/material/dialog';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
@@ -11,6 +15,11 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTooltip } from '@angular/material/tooltip';
 import { SettingsService } from '../../services/settings.service';
+import { TimePickerDialogComponent } from '../time-picker-dialog/time-picker-dialog.component';
+export interface ITimePickerDialogResult {
+  hour: number;
+  minute: number;
+}
 export interface DayInterval {
   start: number;
   end: number;
@@ -49,6 +58,7 @@ export class CalendarDayModalComponent {
 
   constructor(
     private readonly settingsService: SettingsService,
+    private readonly dialog: MatDialog,
     public dialogRef: MatDialogRef<CalendarDayModalComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DayModalData,
   ) {
@@ -130,6 +140,23 @@ export class CalendarDayModalComponent {
     }
   }
 
+  openTimePicker(index: number, field: 'start' | 'end'): void {
+    const dialogRef = this.dialog.open(TimePickerDialogComponent, {
+      data: {
+        selectedHour: Math.floor(this.intervals[index][field]),
+        selectedMinute: (this.intervals[index][field] % 1) * 60,
+      },
+    });
+    dialogRef.afterClosed().subscribe((result: ITimePickerDialogResult) => {
+      if (!!result) {
+        const hour = result.hour + result.minute / 60;
+        this.intervals[index][field] = this.clampHour(hour);
+        this.trimIntervals(index, field);
+        this.validateIntervals();
+      }
+    });
+  }
+
   private formatTimeLabelTo12Hour(value: number) {
     const hours = Math.floor(value % 12);
     const timePeriod = value < 12 ? 'πμ' : 'μμ';
@@ -155,17 +182,18 @@ export class CalendarDayModalComponent {
   }
 
   private validateIntervals(): boolean {
-    for (const interval of this.intervals) {
-      if (interval.end <= interval.start) {
-        this.intervalError = 'Each interval must end after its start time.';
-        return false;
-      }
-    }
+    // for (const interval of this.intervals) {
+    //   if (interval.end < interval.start) {
+    //     this.intervalError = 'Each interval must end after its start time.';
+    //     return false;
+    //   }
+    // }
 
     const sorted = [...this.intervals].sort((a, b) => a.start - b.start);
     for (let i = 0; i < sorted.length - 1; i += 1) {
       if (sorted[i + 1].start < sorted[i].end) {
-        this.intervalError = 'Intervals cannot overlap.';
+        this.intervalError =
+          'Προσοχή: Έχεις 2 ή περισσότερα διαστήματα βάρδιας που επικαλύπτονται.';
         return false;
       }
     }

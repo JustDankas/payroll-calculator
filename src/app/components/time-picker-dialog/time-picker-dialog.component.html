@@ -1,0 +1,56 @@
+<div class="modal-container">
+  <h2 mat-dialog-title>Αρχή Βάρδιας</h2>
+
+  <mat-dialog-content class="time-picker-container">
+    <div class="hours-section">
+      <h3>Hours</h3>
+      <div class="hours-grid">
+        @for (hour of hours; let i = $index; track i) {
+          @if (!(hour === 24 && currentMinute > 0)) {
+            <button
+              type="button"
+              class="time-chip"
+              [class.active]="currentHour === hour"
+              [class.night-shift]="isNightShift(hour)"
+              (click)="selectHour(hour)"
+            >
+              {{ formatHourLabel(hour) }}
+            </button>
+          }
+        }
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="minutes-section">
+      <h3>Minutes</h3>
+      <div class="minutes-grid">
+        @for (min of minutes; let i = $index; track i) {
+          <button
+            type="button"
+            class="time-chip minute-chip"
+            [class.active]="currentMinute === min"
+            (click)="selectMinute(min)"
+          >
+            :{{ min === 0 ? "00" : min }}
+          </button>
+        }
+      </div>
+    </div>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="center">
+    <button mat-button (click)="onCancel()" class="btn-cancel" color="warn">
+      Cancel
+    </button>
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="onConfirm()"
+      class="btn-confirm"
+    >
+      Confirm
+    </button>
+  </mat-dialog-actions>
+</div>

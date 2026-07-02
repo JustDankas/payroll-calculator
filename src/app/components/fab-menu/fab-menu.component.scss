@@ -98,3 +98,22 @@
 .fab-sub-btn:hover .tooltip {
   opacity: 1;
 }
+
+@media (max-width: 600px) {
+  .fab-container {
+    bottom: 16px;
+    right: 16px;
+  }
+
+  .fab-main-btn {
+    width: 48px;
+    height: 48px;
+    font-size: 20px;
+  }
+
+  .fab-sub-btn {
+    width: 40px;
+    height: 40px;
+    font-size: 16px;
+  }
+}

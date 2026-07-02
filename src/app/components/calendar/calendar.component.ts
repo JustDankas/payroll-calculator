@@ -153,6 +153,22 @@ export class CalendarComponent implements OnInit {
     });
   }
 
+  apply5to9Shift(): void {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      data: {
+        message:
+          'Εφαρμογή βάρδιας 5-9 για όλες τις εργάσιμες ημέρες του μήνα. Είστε σίγουροι;',
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (!result) {
+        return;
+      }
+      this.payrollService.apply5to9Shift();
+    });
+  }
+
   onCellDrop(event: CdkDragDrop<DayData>) {
     const sourceData = event.item.data; // Data of the cell being dragged
     const targetData = event.container.data; // Data of the cell dropped into
@@ -171,9 +187,5 @@ export class CalendarComponent implements OnInit {
 
     this.payrollService.setDayIntervals(findCell.date, sourceData.intervals);
     this.payrollService.setDayHoliday(findCell.date, sourceData.isHoliday);
-  }
-
-  saveCellData(dayData: any) {
-    // Your logic to persist data updates to a service or state
   }
 }

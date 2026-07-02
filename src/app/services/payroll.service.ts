@@ -364,6 +364,21 @@ export class PayrollService {
     this.initializeMonth();
   }
 
+  apply5to9Shift(): void {
+    const data: MonthData = { ...this.monthData.value };
+    this.initializeMonth();
+
+    Object.keys(data).forEach((day) => {
+      const dayData = data[day];
+      const Day = dayData.date.getDay();
+      if (Day >= 1 && Day <= 5) {
+        dayData.intervals = [{ start: 9, end: 17 }];
+        dayData.hours = 8;
+      }
+    });
+    this.monthData.next(data);
+  }
+
   private clampHour(value: number): number {
     return Math.min(Math.max(isNaN(Number(value)) ? 0 : Number(value), 0), 24);
   }

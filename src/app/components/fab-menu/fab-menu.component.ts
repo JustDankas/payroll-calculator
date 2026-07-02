@@ -30,6 +30,8 @@ export class FabMenuComponent {
   }
 
   openInfoDialog(): void {
-    this.dialog.open(InfoDialogComponent);
+    this.dialog.open(InfoDialogComponent, {
+      autoFocus: false, // 👈 This stops Material from scrolling down to focus an element
+    });
   }
 }

@@ -1,3 +1,4 @@
+@import "../../../styles/colors";
 .modal-container {
   width: 500px;
   box-sizing: border-box;
@@ -35,6 +36,20 @@
 .space-between {
   display: block;
   margin: 16px 0;
+}
+
+.external-links-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  h3 {
+    color: #2563eb;
+    font-size: 18px;
+    margin-bottom: 12px;
+    border-left: 4px solid #2563eb;
+    padding-left: 10px;
+  }
 }
 
 .salary-summary-container {

@@ -44,6 +44,10 @@
       }
     }
 
+    .quick-action-button {
+      border-radius: 8px;
+    }
+
     .clear-button {
       border-radius: 8px;
       color: $error-light;
@@ -296,10 +300,59 @@
 
 @media (max-width: 600px) {
   .calendar-card {
-    padding: 16px;
+    padding: 4px;
     .month-header {
       flex-wrap: wrap;
       gap: 10px;
+
+      .month-title {
+        font-size: 16px;
+      }
+      .quick-action-button {
+        width: 32px !important;
+        height: 32px !important;
+        line-height: 32px !important;
+        padding: 0 !important;
+
+        display: inline-flex !important;
+        align-items: center;
+        justify-content: center;
+
+        mat-icon {
+          font-size: 20px !important;
+          width: 20px !important;
+          height: 20px !important;
+        }
+      }
+
+      .change-month-button {
+        // 1. Redefine the core bounding box
+        width: 32px !important;
+        height: 32px !important;
+        line-height: 32px !important;
+        padding: 0 !important;
+
+        // 2. Force the internal flex containers to center nicely
+        display: inline-flex !important;
+        align-items: center;
+        justify-content: center;
+
+        mat-icon {
+          // 3. For Material Icons, both font-size AND width/height must match
+          font-size: 20px !important;
+          width: 20px !important;
+          height: 20px !important;
+
+          // Reset any default line-height causing shifts
+          line-height: 20px !important;
+        }
+
+        // 4. Shrink the invisible touch target so it doesn't overflow the button
+        ::v-deep .mat-mdc-button-touch-target {
+          width: 32px !important;
+          height: 32px !important;
+        }
+      }
     }
     .calendar-grid {
       .day-cell {

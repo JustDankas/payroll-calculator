@@ -84,6 +84,24 @@ export class PayrollService {
       }
     });
 
+    this.initValuesFromLocalStorage();
+
+    this.baseHourlyRate$.subscribe((rate) => {
+      this.localStorageService.setItem('baseHourlyRate', rate);
+    });
+
+    this.holidayMultiplier$.subscribe((multiplier) => {
+      this.localStorageService.setItem('holidayMultiplier', multiplier);
+    });
+
+    this.nightMultiplier$.subscribe((multiplier) => {
+      this.localStorageService.setItem('nightMultiplier', multiplier);
+    });
+
+    this.baseTaxRate$.subscribe((taxRate) => {
+      this.localStorageService.setItem('baseTaxRate', taxRate);
+    });
+
     this.monthData$.subscribe((data) => {
       const hasIntervals = Object.keys(data).some((key) => {
         const dayData = data[key];
@@ -103,6 +121,27 @@ export class PayrollService {
         );
       }
     });
+  }
+
+  initValuesFromLocalStorage(): void {
+    const baseRate = this.localStorageService.getItem<number>('baseHourlyRate');
+    if (baseRate) {
+      this.baseHourlyRate.next(baseRate);
+    }
+    const holidayMultiplier =
+      this.localStorageService.getItem<number>('holidayMultiplier');
+    if (holidayMultiplier) {
+      this.holidayMultiplier.next(holidayMultiplier);
+    }
+    const nightMultiplier =
+      this.localStorageService.getItem<number>('nightMultiplier');
+    if (nightMultiplier) {
+      this.nightMultiplier.next(nightMultiplier);
+    }
+    const baseTaxRate = this.localStorageService.getItem<number>('baseTaxRate');
+    if (baseTaxRate) {
+      this.baseTaxRate.next(baseTaxRate);
+    }
   }
 
   serializeDate(date: Date): string {
@@ -366,7 +405,7 @@ export class PayrollService {
 
   apply5to9Shift(): void {
     const data: MonthData = { ...this.monthData.value };
-    this.initializeMonth();
+    // this.initializeMonth();
 
     Object.keys(data).forEach((day) => {
       const dayData = data[day];

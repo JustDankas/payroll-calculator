@@ -54,14 +54,36 @@
           grid-template-columns: 1fr;
         }
 
-        .input-field {
-          width: 100%;
+        .inputs-container {
+          // background: red; /* Sleek light slate dashboard section */
+          display: flex;
+          flex-direction: column;
+          gap: 24px; /* Adds uniform spacing between the fields */
+          padding-bottom: 16px; /* Ensures the wrapping text has breathing room at the bottom */
+          .input-field {
+            width: 100%;
+            .info-icon {
+              display: none; /* Hidden by default, shown on mobile */
+            }
 
-          .info-hint {
-            font-size: 13px;
-            color: $text-secondary;
-            margin-top: 6px;
-            line-height: 1.4;
+            .info-hint {
+              font-size: 13px;
+              color: $text-secondary;
+              margin-top: 6px;
+              line-height: 1.4;
+              // white-space: normal; /* Forces text wrapping if constrained */
+            }
+          }
+        }
+
+        // Alternatively, just add extra margin to the bottom field on mobile screens
+        @media (max-width: 900px) {
+          .inputs-container .input-field .info-hint {
+            display: none;
+          }
+
+          .inputs-container .input-field .info-icon {
+            display: inline-block;
           }
         }
 
@@ -180,3 +202,83 @@
     font-size: 14px;
   }
 }
+
+// Styling for the top info
+// Styling for the top info
+// Styling for the top info
+
+/* Wrapper για να κρατάει το ίδιο max-width και padding με την υπόλοιπη εφαρμογή */
+.app-info-wrapper {
+  width: 100%;
+  max-width: 1200px; /* Προσάρμοσέ το ανάλογα με το max-width του .container σου */
+  margin: 20px auto 0 auto;
+  padding: 0 16px;
+  box-sizing: border-box;
+}
+
+/* Το Material Card προσαρμοσμένο ως inline text section */
+.app-info-card {
+  background-color: #fafafa !important; /* Πολύ απαλό γκρι για να δένει με το Material design */
+  border: 1px solid #e0e0e0;
+  box-shadow: none !important; /* Αφαιρούμε τη βαριά σκιά για να φαίνεται flat/μέρος του layout */
+  border-radius: 8px !important;
+}
+
+.info-card-content {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 16px !important;
+}
+
+.info-card-icon {
+  color: $primary-color; /* Το κλασικό μπλε του Material Info */
+  flex-shrink: 0; /* Εμποδίζει το εικονίδιο να μικρύνει στο mobile */
+}
+
+.info-card-text {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #424242;
+}
+
+.negative-disclaimer {
+  // color: #757575;
+  margin-left: 4px;
+
+  .no-break {
+    white-space: nowrap;
+  }
+}
+
+/* --- Mobile Responsive Στυλ --- */
+@media (max-width: 768px) {
+  .app-info-wrapper {
+    margin-top: 12px;
+    padding: 0 12px; /* Πιο στενά περιθώρια στα κινητά */
+  }
+
+  .info-card-content {
+    align-items: flex-start; /* Το εικονίδιο ευθυγραμμίζεται πάνω όταν το κείμενο διπλώνει */
+    gap: 12px;
+    padding: 12px !important;
+  }
+
+  .info-card-text {
+    font-size: 13px; /* Ελαφρώς μικρότερο text για οικονομία χώρου */
+  }
+
+  /* Στο κινητό, η άρνηση αλλάζει γραμμή για να «χτυπάει» αμέσως στο μάτι */
+  .negative-disclaimer {
+    display: block;
+    margin-left: 0;
+    margin-top: 6px;
+    font-weight: 500; /* Λίγο πιο έντονο στο κινητό για να μην το προσπεράσουν */
+  }
+}
+
+// Styling for the top info
+// Styling for the top info
+// Styling for the top info

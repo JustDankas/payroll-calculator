@@ -1,76 +1,123 @@
 <mat-toolbar color="primary" class="toolbar">
   <h1 class="title">Payroll Calculator</h1>
 </mat-toolbar>
+<div class="app-info-wrapper">
+  <mat-card class="app-info-card">
+    <mat-card-content class="info-card-content">
+      <mat-icon class="info-card-icon">info</mat-icon>
+      <p class="info-card-text">
+        <strong>Η εφαρμογή αφορά:</strong> Ωρομίσθιους, μερική απασχόληση,
+        βάρδιες, νυχτερινά και αργίες.
+        <span class="negative-disclaimer"
+          >Δεν είναι κατάλληλη για μισθωτούς σταθερού ωραρίου (π.χ.
+          <span class="no-break">Δευτέρα-Παρασκευή</span>,
+          <span class="no-break">9-5</span>).</span
+        >
+      </p>
+    </mat-card-content>
+  </mat-card>
+</div>
 
 <div class="container">
   <!-- Settings Section -->
   <div class="constrained-width">
     <mat-card class="settings-card">
       <mat-card-content class="settings-content">
-        <mat-form-field class="input-field">
-          <mat-label>Ωρομίσθιο (€)</mat-label>
-          <input
-            matInput
-            type="number"
-            [(ngModel)]="baseHourlyRate"
-            (change)="onBaseRateChange()"
-            step="0.01"
-          />
-          <!-- <mat-icon
-          matSuffix
-          matTooltip="Your standard hourly wage before taxes, bonuses, or overtime are applied."
-          matTooltipPosition="above"
-          class="info-icon"
-        >
-          info
-        </mat-icon> -->
-          <mat-hint class="info-hint"
-            >Το σταθερό ωρομίσθιο σας πριν τους φόρους.</mat-hint
-          >
-        </mat-form-field>
+        <div class="inputs-container">
+          <mat-form-field class="input-field">
+            <mat-label>Ωρομίσθιο (€)</mat-label>
+            <input
+              matInput
+              type="number"
+              [(ngModel)]="baseHourlyRate"
+              (change)="onBaseRateChange()"
+              step="0.01"
+            />
+            <mat-icon
+              matSuffix
+              matTooltip="Το σταθερό ωρομίσθιο σας πριν τους φόρους. Για το 2026, αυτό
+              είναι στα 5.52 €/ώρα."
+              matTooltipPosition="left"
+              class="info-icon"
+            >
+              info
+            </mat-icon>
+            <mat-hint class="info-hint"
+              >Το σταθερό ωρομίσθιο σας πριν τους φόρους. Για το 2026, αυτό
+              είναι στα 5.52 €/ώρα.</mat-hint
+            >
+          </mat-form-field>
 
-        <mat-form-field class="input-field">
-          <mat-label>Πολλαπλασιαστής Αργιών</mat-label>
-          <input
-            matInput
-            type="number"
-            [(ngModel)]="holidayMultiplier"
-            (change)="onMultiplierChange()"
-            step="0.1"
-          />
-          <mat-hint class="info-hint"
-            >Τις Κυριακές και τις αργίες, το ωρομίσθιό σας πολλαπλασιάζεται επί
-            1.75.</mat-hint
-          >
-        </mat-form-field>
-        <mat-form-field class="input-field">
-          <mat-label>Πολλαπλασιαστής Βραδινών Ωρών</mat-label>
-          <input
-            matInput
-            type="number"
-            [(ngModel)]="nightMultiplier"
-            (change)="onTaxRateChange()"
-            step="0.01"
-          />
-          <mat-hint class="info-hint"
-            >Τις βραδινές ώρες (10:00 μμ εώς 6:00 πμ), το ωρομίσθιό σας
-            πολλαπλασιάζεται επί 1.25.</mat-hint
-          >
-        </mat-form-field>
-        <mat-form-field class="input-field">
-          <mat-label>Ποσοστό Μεικτών Κρατήσεων (%)</mat-label>
-          <input
-            matInput
-            type="number"
-            [(ngModel)]="baseTaxRate"
-            (change)="onTaxRateChange()"
-            step="0.01"
-          />
-          <mat-hint class="info-hint"
-            >Το ποσοστό του μεικτού μισθού σας που καταλαβάνεται σε ιατρική
-            περίλθαψη και ασφάλιση.</mat-hint
-          >
-        </mat-form-field>
+          <mat-form-field class="input-field">
+            <mat-label>Πολλαπλασιαστής Αργιών</mat-label>
+            <input
+              matInput
+              type="number"
+              [(ngModel)]="holidayMultiplier"
+              (change)="onMultiplierChange()"
+              step="0.1"
+            />
+            <mat-icon
+              matSuffix
+              matTooltip="Τις Κυριακές και τις αργίες, το ωρομίσθιό σας πολλαπλασιάζεται
+              επί 1.75."
+              matTooltipPosition="left"
+              class="info-icon"
+            >
+              info
+            </mat-icon>
+            <mat-hint class="info-hint"
+              >Τις Κυριακές και τις αργίες, το ωρομίσθιό σας πολλαπλασιάζεται
+              επί 1.75.</mat-hint
+            >
+          </mat-form-field>
+          <mat-form-field class="input-field">
+            <mat-label>Πολλαπλασιαστής Βραδινών Ωρών</mat-label>
+            <input
+              matInput
+              type="number"
+              [(ngModel)]="nightMultiplier"
+              (change)="onTaxRateChange()"
+              step="0.01"
+            />
+            <mat-icon
+              matSuffix
+              matTooltip="Τις βραδινές ώρες (10:00 μμ εώς 6:00 πμ), το ωρομίσθιό σας
+              πολλαπλασιάζεται επί 1.25."
+              matTooltipPosition="left"
+              class="info-icon"
+            >
+              info
+            </mat-icon>
+            <mat-hint class="info-hint"
+              >Τις βραδινές ώρες (10:00 μμ εώς 6:00 πμ), το ωρομίσθιό σας
+              πολλαπλασιάζεται επί 1.25.</mat-hint
+            >
+          </mat-form-field>
+          <mat-form-field class="input-field">
+            <mat-label>Ποσοστό Μεικτών Κρατήσεων (%)</mat-label>
+            <input
+              matInput
+              type="number"
+              [(ngModel)]="baseTaxRate"
+              (change)="onTaxRateChange()"
+              step="0.01"
+            />
+            <mat-icon
+              matSuffix
+              matTooltip="Το ποσοστό του μεικτού μισθού σας που καταλαβάνεται σε ιατρική
+              περίλθαψη και ασφάλιση. Για το 2026, αυτό είναι 13.87%."
+              matTooltipPosition="left"
+              class="info-icon"
+            >
+              info
+            </mat-icon>
+            <mat-hint class="info-hint"
+              >Το ποσοστό του μεικτού μισθού σας που καταλαβάνεται σε ιατρική
+              περίλθαψη και ασφάλιση. Για το 2026, αυτό είναι 13.87%.</mat-hint
+            >
+          </mat-form-field>
+        </div>
 
         <div class="income-display">
           <div class="income-section">

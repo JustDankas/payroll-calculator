@@ -64,3 +64,17 @@ Clone the project to your local machine using git:
 ```bash
 git clone https://github.com/JustDankas/payroll-calculator.git
 cd payroll-calculator
+```
+
+### 📦 2. Install Dependencies
+Install all the necessary packages required for the application:
+```bash
+npm install
+```
+
+### 🚀 3. Run the Application
+Start the development server:
+```bash
+npm start
+```
+The application will open automatically in your browser at http://localhost:4200 (or the port specified in your console).

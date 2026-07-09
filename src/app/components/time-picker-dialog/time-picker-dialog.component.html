@@ -1,5 +1,7 @@
 <div class="modal-container">
-  <h2 mat-dialog-title>Αρχή Βάρδιας</h2>
+  <h2 mat-dialog-title>
+    {{ data.field === "start" ? "Αρχή Βάρδιας" : "Τέλος Βάρδιας" }}
+  </h2>
 
   <mat-dialog-content class="time-picker-container">
     <div class="hours-section">

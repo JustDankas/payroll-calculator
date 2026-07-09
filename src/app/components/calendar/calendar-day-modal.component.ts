@@ -149,6 +149,7 @@ export class CalendarDayModalComponent {
           field === 'start'
             ? Math.floor(this.intervals[index].end)
             : Math.floor(this.intervals[index].start),
+        field,
       },
     });
     dialogRef.afterClosed().subscribe((result: ITimePickerDialogResult) => {

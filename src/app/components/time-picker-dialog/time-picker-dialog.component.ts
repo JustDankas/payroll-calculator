@@ -11,6 +11,7 @@ export interface TimePickerDialogData {
   selectedHour?: number; // 0 to 23
   selectedMinute?: number; // 0 or 30
   otherHour?: number; // 0 to 23
+  field?: 'start' | 'end'; // Indicates which field is being edited
 }
 
 @Component({

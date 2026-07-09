@@ -3,7 +3,7 @@
 
   <mat-dialog-content class="time-picker-container">
     <div class="hours-section">
-      <h3>Hours</h3>
+      <h3>ΩΡΑ</h3>
       <div class="hours-grid">
         @for (hour of hours; let i = $index; track i) {
           @if (!(hour === 24 && currentMinute > 0)) {
@@ -14,6 +14,9 @@
               [class.night-shift]="isNightShift(hour)"
               (click)="selectHour(hour)"
             >
+              @if (data.otherHour === hour) {
+                <div class="dot-indicator"></div>
+              }
               {{ formatHourLabel(hour) }}
             </button>
           }
@@ -24,7 +27,7 @@
     <div class="divider"></div>
 
     <div class="minutes-section">
-      <h3>Minutes</h3>
+      <h3>Λεπτα</h3>
       <div class="minutes-grid">
         @for (min of minutes; let i = $index; track i) {
           <button

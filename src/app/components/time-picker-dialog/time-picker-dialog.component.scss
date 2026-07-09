@@ -69,6 +69,18 @@
   cursor: pointer;
   transition: all 0.2s ease-in-out;
   text-align: center;
+  position: relative;
+
+  .dot-indicator {
+    display: block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: $error-light;
+    position: absolute;
+    top: 4px;
+    right: 4px;
+  }
 
   &:hover {
     background-color: $primary-light;
@@ -85,11 +97,13 @@
 
   // Night Shift modifier (0-6 AM, 10-12 PM)
   &.night-shift {
-    background-color: mix($text-primary, #ffffff, 8%); // Darker soft tint
+    background-color: mix($text-primary, #c8c7ff, 8%); // Darker soft tint
     border-color: mix($text-primary, $border-color, 15%);
     color: mix($text-primary, #000000, 80%);
 
     &:hover {
+      border-color: rgba($primary-color, 0.3);
+
       background-color: mix($primary-color, $text-primary, 15%);
       color: #ffffff;
     }

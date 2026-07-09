@@ -10,6 +10,7 @@ import { SettingsService } from '../../services/settings.service';
 export interface TimePickerDialogData {
   selectedHour?: number; // 0 to 23
   selectedMinute?: number; // 0 or 30
+  otherHour?: number; // 0 to 23
 }
 
 @Component({
@@ -56,7 +57,7 @@ export class TimePickerDialogComponent implements OnInit {
 
   isNightShift(hour: number): boolean {
     // Night shift: 0 to 6 AM (0-6) AND 10 PM to 12 AM (22-23)
-    return (hour >= 0 && hour <= 6) || (hour >= 22 && hour <= 23);
+    return (hour >= 0 && hour <= 6) || (hour >= 22 && hour <= 24);
   }
 
   formatHourLabel(hour: number): string {

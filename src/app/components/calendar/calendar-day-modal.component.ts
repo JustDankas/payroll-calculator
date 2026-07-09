@@ -145,6 +145,10 @@ export class CalendarDayModalComponent {
       data: {
         selectedHour: Math.floor(this.intervals[index][field]),
         selectedMinute: (this.intervals[index][field] % 1) * 60,
+        otherHour:
+          field === 'start'
+            ? Math.floor(this.intervals[index].end)
+            : Math.floor(this.intervals[index].start),
       },
     });
     dialogRef.afterClosed().subscribe((result: ITimePickerDialogResult) => {

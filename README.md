@@ -1,59 +1,66 @@
-# AnchoPay
+# 💰 Payroll Calculator
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.8.
+Μια απλή και εύχρηστη εφαρμογή υπολογισμού μισθού, ειδικά σχεδιασμένη για εργαζόμενους στην εστίαση και σε επαγγέλματα με κυλιόμενα ή σπαστά ωράρια, νυχτερινές βάρδιες και προσαυξήσεις αργιών.
 
-## Development server
+---
 
-To start a local development server, run:
+## 🇬🇷 Greek User Manual (Οδηγίες Χρήσης)
 
+### 🌐 Άμεση Πρόσβαση
+Μπορείτε να χρησιμοποιήσετε την εφαρμογή απευθείας από τον browser σας εδώ:
+👉 **[Payroll Calculator Live App](https://justdankas.github.io/payroll-calculator/)**
+
+---
+
+### ⚙️ Βήμα 1: Ρύθμιση Παραμέτρων
+Πριν ξεκινήσετε να βάζετε βάρδιες, προσαρμόστε την εφαρμογή στα δεδομένα σας:
+1. **Ωρομίσθιο:** Πληκτρολογήστε το βασικό ωρομίσθιό σας.
+2. **Πολλαπλασιαστές:** Αλλάξτε τα ποσοστά προσαύξησης για τις επίσημες αργίες και τις βραδινές ώρες (αν διαφέρουν από τα προκαθορισμένα).
+3. **Παρακρατήσεις:** Εισάγετε τυχόν κρατήσεις (π.χ. ασφαλιστικές εισφορές, φόρους) αν επιθυμείτε καθαρό υπολογισμό.
+
+<img width="1134" height="414" alt="Ρύθμιση Παραμέτρων" src="https://github.com/user-attachments/assets/7d20e543-f9f7-446d-8389-1b36b3f42035" />
+
+---
+
+### 📅 Βήμα 2: Εισαγωγή Βάρδιας
+Η προσθήκη των ωρών εργασίας γίνεται εύκολα μέσω του ημερολογίου:
+
+1. **Επιλογή ημέρας:** Κάντε κλικ πάνω στη μέρα του ημερολογίου που θέλετε να επεξεργαστείτε.
+2. **Προσθήκη:** Κάντε κλικ στο κουμπί **"Προσθήκη Βάρδιας"**.
+
+   <img width="444" height="238" alt="Προσθήκη βάρδιας" src="https://github.com/user-attachments/assets/7a90b571-31f4-460e-8e04-8d22015126df" />
+
+4. **Ωράριο:** Συμπληρώστε την ώρα έναρξης και λήξης της βάρδιας σας.
+   <img width="537" height="470" alt="Συμπλήρωση ωραρίου" src="https://github.com/user-attachments/assets/e41d3cfb-3ee0-446d-aad6-e5ffd91fbff1" />
+
+5. **Σπαστό Ωράριο:** Αν δουλεύετε σπαστό (π.χ. μεσημέρι και βράδυ την ίδια μέρα), πατήστε ξανά "Προσθήκη Βάρδιας" για να βάλετε και το δεύτερο ωράριο στην ίδια ημέρα.
+6. **Εξαίρεση Αργίας:** Αν μια μέρα είναι τοπική/ειδική αργία και δεν την αναγνωρίζει αυτόματα η εφαρμογή, τσεκάρετε το αντίστοιχο κουτάκι.
+
+   <img width="498" height="402" alt="Επιλογή αργίας" src="https://github.com/user-attachments/assets/424fb35a-1b79-4445-b407-b5a81041a7f3" />
+
+💡 **Έξυπνη Λειτουργία (Γρήγορη Αντιγραφή):** Έχετε σταθερό ωράριο; Κάντε κλικ και **σύρετε (drag & drop)** τα κελιά των ημερών για να αντιγράψετε γρήγορα τις βάρδιες στις επόμενες ημέρες!
+<img width="633" height="564" alt="Αντιγραφή βαρδιών" src="https://github.com/user-attachments/assets/5cee754a-01d1-4baf-8bae-ce6f7292e50f" />
+
+---
+
+### 📊 Βήμα 3: Αποτελέσματα & Ανάλυση
+Στο κάτω μέρος ή στο πλάι της οθόνης, βλέπετε σε πραγματικό χρόνο την πλήρη ανάλυση:
+* Συνολικές ώρες εργασίας (απλές, νυχτερινές, αργίες).
+* Αναλυτικό ποσό απολαβών που δικαιούστε προ και μετά κρατήσεων.
+
+<img width="1117" height="530" alt="Αποτελέσματα" src="https://github.com/user-attachments/assets/7e235bbb-3a68-48d9-b530-4039c53ab1e8" />
+
+---
+
+## 🇬🇧 English Developer Manual
+
+If you want to run this project locally on your machine or contribute to the development, follow the steps below.
+
+### 🛠️ Prerequisites
+Make sure you have [Node.js](https://nodejs.org/) installed on your system.
+
+### 📥 1. Clone the Repository
+Clone the project to your local machine using git:
 ```bash
-ng serve
-```
-
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+git clone https://github.com/JustDankas/payroll-calculator.git
+cd payroll-calculator
